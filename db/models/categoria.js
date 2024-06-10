@@ -19,7 +19,8 @@ module.exports = (sequelize, DataTypes, Model) => {
       },
       {
         sequelize, 
-        modelName: 'Categoria', 
+        modelName: 'Categoria',
+        tableName: 'Categoria',
         createdAt: false,
         updatedAt: false
       }
