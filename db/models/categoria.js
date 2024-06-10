@@ -1,6 +1,10 @@
 module.exports = (sequelize, DataTypes, Model) => {
-    class Categoria extends Model {}
-  
+    class Categoria extends Model {
+      static associate(models) {
+        this.hasMany(models.Modelo, {foreignKey: "id_categoria"});
+      }
+    }
+
     Categoria.init(
       {
         id: {

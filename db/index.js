@@ -22,8 +22,10 @@ db.sequelize = sequelize
 
 tableNames = TABLE_NAMES.split(",");
 tableNames.forEach(name => {
-  db[name] = require(`./models/${name}.js`)(sequelize, DataTypes, Model); 
+  require(`./models/${name}.js`)(sequelize, DataTypes, Model); 
 });
+
+Object.values(sequelize.models).filter(model => model.hasOwnProperty("associate") && typeof model.associate === "function").forEach(model => model.associate(sequelize.models));
 
 db.sequelize.sync({ force: true }).then(() => {
   console.log("Tables created");
