@@ -18,7 +18,7 @@ sequelize.authenticate()
 const db = {}
 
 db.Sequelize = Sequelize;
-db.sequelize = sequelize
+db.sequelize = sequelize;
 
 tableNames = TABLE_NAMES.split(",");
 tableNames.forEach(name => {
@@ -27,7 +27,7 @@ tableNames.forEach(name => {
 
 Object.values(sequelize.models).filter(model => model.hasOwnProperty("associate") && typeof model.associate === "function").forEach(model => model.associate(sequelize.models));
 
-db.sequelize.sync({ force: true }).then(() => {
+db.sequelize.sync({ force: false }).then(() => {
   console.log("Tables created");
 });
 

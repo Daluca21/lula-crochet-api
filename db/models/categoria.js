@@ -15,10 +15,6 @@ module.exports = (sequelize, DataTypes, Model) => {
         nombre: {
           type: DataTypes.STRING,
           allowNull: false
-        },
-        enabled: {
-          type: DataTypes.BOOLEAN,
-          allowNull: false
         }
       },
       {
