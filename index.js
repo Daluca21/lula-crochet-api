@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 
 const { PORT } = require("./config");
-const db = require("./db/index.js");
+//const db = require("./db/index.js");
 const categoriaRouter = require("./routes/CategoriaRouter");
 
 const app = express();
