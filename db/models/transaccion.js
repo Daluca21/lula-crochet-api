@@ -1,14 +1,18 @@
 module.exports = module.exports = (sequelize, DataTypes, Model) => {
-  class Transaccion extends Model {}
+  class Transaccion extends Model {
+    static associate(models) {
+      this.belongsTo(models.Factura, { foreignKey: 'reference' });
+    }
+  }
   Transaccion.init(
     {
       id: {
-        type: DataTypes.STRING, 
+        type: DataTypes.STRING,
         primaryKey: true
       },
       customer_email: {
-          type: DataTypes.STRING(256), 
-          allowNull: false
+        type: DataTypes.STRING(256),
+        allowNull: false
       },
       amount_in_cents: {
         type: DataTypes.INTEGER,
@@ -23,16 +27,16 @@ module.exports = module.exports = (sequelize, DataTypes, Model) => {
         allowNull: false
       },
       payment_method_type: {
-          type: DataTypes.STRING(256), 
-          allowNull: false
+        type: DataTypes.STRING(256),
+        allowNull: false
       }
     },
     {
-      sequelize, 
-      modelName: 'Transaccion', 
+      sequelize,
+      modelName: 'Transaccion',
       tableName: 'Transaccion',
       createdAt: false,
-      updatedAt: false 
+      updatedAt: false
     },
   );
 };

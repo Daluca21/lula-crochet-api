@@ -1,5 +1,9 @@
 module.exports = module.exports = (sequelize, DataTypes, Model) => {
-  class Oferta extends Model {}
+  class Oferta extends Model {
+    static associate(models) {
+      this.belongsToMany(models.Producto, {through:'Producto_Oferta'});
+    }
+  }
   Oferta.init(
     {
       id: {

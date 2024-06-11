@@ -1,5 +1,9 @@
 module.exports = module.exports = (sequelize, DataTypes, Model) => {
-  class Entrega extends Model {}
+  class Entrega extends Model {
+    static associate(models) {
+      this.belongsTo(models.Factura, { foreignKey: 'id_factura'});
+    }
+  }
   Entrega.init(
     {
       id: {

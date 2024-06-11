@@ -1,26 +1,26 @@
 module.exports = (sequelize, DataTypes, Model) => {
-  class Foto extends Model {}
+  class Foto extends Model {
+    static associate(models) {
+      this.belongsToMany(models.Modelo, { through: "Modelo_Foto"});
+    }
+  }
 
   Foto.init(
     {
       id: {
-        type: DataTypes.INTEGER, 
+        type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
       },
       url: {
         type: DataTypes.STRING,
         allowNull: false
-      },
-      enabled: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false
       }
     },
     {
-      sequelize, 
+      sequelize,
       modelName: 'Foto',
-      tableName: 'Foto', 
+      tableName: 'Foto',
       createdAt: false,
       updatedAt: false
     }

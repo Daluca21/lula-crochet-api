@@ -1,19 +1,25 @@
 module.exports = (sequelize, DataTypes, Model) => {
-  class Devolucion extends Model {}
+  class Devolucion extends Model {
+    static associate(models) {
+      this.belongsToMany(models.Producto, { through: 'Producto_Devolucion' });
+      this.belongsTo(models.Factura, { foreignKey: 'id_factura'});
+      
+    }
+  }
   Devolucion.init(
     {
       id: {
-        type: DataTypes.INTEGER, 
+        type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
       },
       fechaDevolucion: {
-          type: DataTypes.DATE, 
-          allowNull: false
+        type: DataTypes.DATE,
+        allowNull: false
       },
       estado: {
-          type: DataTypes.INTEGER, 
-          allowNull: false
+        type: DataTypes.INTEGER,
+        allowNull: false
       },
       motivo: {
         type: DataTypes.TEXT,
@@ -21,11 +27,11 @@ module.exports = (sequelize, DataTypes, Model) => {
       }
     },
     {
-      sequelize, 
-      modelName: 'Devolucion', 
+      sequelize,
+      modelName: 'Devolucion',
       tableName: 'Devolucion',
       createdAt: false,
-      updatedAt: false 
+      updatedAt: false
     },
   );
 };

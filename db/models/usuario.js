@@ -1,5 +1,10 @@
 module.exports = (sequelize, DataTypes, Model) => {
-  class Usuario extends Model {}
+  class Usuario extends Model {
+    static associate(models) {
+      this.belongsToMany(models.Producto, {through:'Carrito'});
+      this.belongsTo(models.Usuario, { foreignKey: 'id_rol'});
+    }
+  }
 
   Usuario.init(
     {

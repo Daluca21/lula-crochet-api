@@ -1,28 +1,35 @@
 module.exports = (sequelize, DataTypes, Model) => {
-    class Modelo extends Model {}
-    
-    Modelo.init(
-      {
-        id: {
-          type: DataTypes.INTEGER, 
-          autoIncrement: true,
-          primaryKey: true
-        },
-        nombre: {
-          type: DataTypes.STRING,
-          allowNull: false
-        },
-        enabled: {
-          type: DataTypes.BOOLEAN,
-          allowNull: false
-        }
+  class Modelo extends Model {
+    static associate(models) {
+      this.belongsToMany(models.Foto, { through: "Modelo_Foto" });
+      this.belongsToMany(models.Material, { through: "Modelo_Material" });
+      this.belongsTo(models.Categoria, { foreignKey: 'id_categoria' });
+      this.hasMany(models.Producto, {foreignKey: 'id_modelo'});
+    }
+  }
+
+  Modelo.init(
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
       },
-      {
-        sequelize, 
-        modelName: 'Modelo',
-        TableName: 'Modelo', 
-        createdAt: false,
-        updatedAt: false
+      nombre: {
+        type: DataTypes.STRING,
+        allowNull: false
       },
-    );
-  };
+      enabled: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false
+      }
+    },
+    {
+      sequelize,
+      modelName: 'Modelo',
+      tableName: 'Modelo',
+      createdAt: false,
+      updatedAt: false
+    },
+  );
+};

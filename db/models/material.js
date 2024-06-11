@@ -1,10 +1,14 @@
 module.exports = (sequelize, DataTypes, Model) => {
-  class Material extends Model {}
+  class Material extends Model {
+    static associate(models) {
+      this.belongsToMany(models.Modelo, { through: "Modelo_Material" });
+    }
+  }
 
   Material.init(
     {
       id: {
-        type: DataTypes.INTEGER, 
+        type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
       },
@@ -14,16 +18,13 @@ module.exports = (sequelize, DataTypes, Model) => {
       },
       grosor: {
         type: DataTypes.INTEGER,
-      },
-      enabled: {
-        type: DataTypes.BOOLEAN,
         allowNull: false
       }
     },
     {
-      sequelize, 
+      sequelize,
       modelName: 'Material',
-      tableName: 'Material', 
+      tableName: 'Material',
       createdAt: false,
       updatedAt: false
     }
