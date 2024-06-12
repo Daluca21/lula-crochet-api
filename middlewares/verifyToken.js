@@ -9,7 +9,7 @@ const verifyToken = (req, res, next) => {
     }
     try {
         const payload = jwt.verify(token, SECRET_KEY);
-        req.username = payload.username;
+        req.correo = payload.correo;
         next();
     } catch (error) {
         return res.status(403).json({ message: "Token not valid" });

@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes, Model) => {
   class Usuario extends Model {
     static associate(models) {
       this.belongsToMany(models.Producto, {through:'Carrito'});
-      this.belongsTo(models.Usuario, { foreignKey: 'id_rol'});
+      this.belongsTo(models.Rol, { foreignKey: 'id_rol'});
     }
   }
 
@@ -25,6 +25,10 @@ module.exports = (sequelize, DataTypes, Model) => {
         allowNull: false
       },
       telefono: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      contrasena: {
         type: DataTypes.STRING,
         allowNull: false
       }

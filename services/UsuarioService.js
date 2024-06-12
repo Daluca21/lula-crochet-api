@@ -1,5 +1,6 @@
 const db = require("../db/index")
 const models = db.sequelize.models;
+const rolDefault = 3;
 
 class UsuarioService {
     constructor() { }
@@ -28,6 +29,12 @@ class UsuarioService {
     async create(data) {
         const res = await models.Usuario.create(data);
         return res;
+    }
+
+    async createDefault(data) {
+        data.id_rol= rolDefault;
+        const usuario = models.Usuario.create(data);
+        return usuario;
     }
 
     async update(id, data) {

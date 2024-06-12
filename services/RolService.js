@@ -1,7 +1,7 @@
 const db = require("../db/index")
 const models = db.sequelize.models;
 
-class UsuarioService {
+class RolService {
     constructor() { }
 
     async find(params) {
