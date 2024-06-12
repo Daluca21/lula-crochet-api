@@ -2,10 +2,12 @@ require("dotenv").config();
 
 const PORT = process.env.PORT || 8080;
 const MODE = process.env.MODE || "dev";
+const SECRET_KEY = process.env.SECRET_KEY || "unaLLaveSecretaM";
 
 module.exports = {
     PORT,
     MODE,
+    SECRET_KEY,
     // EMAIL,
     DB_USER: process.env.DB_USER,
     DB_PASSWORD: process.env.DB_PASSWORD,
