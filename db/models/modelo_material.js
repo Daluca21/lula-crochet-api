@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes, Model) => {
-    class ModeloFoto extends Model { }
+    class ModeloMaterial extends Model { }
 
-    ModeloFoto.init(
+    ModeloMaterial.init(
         {},
         {
             sequelize,
