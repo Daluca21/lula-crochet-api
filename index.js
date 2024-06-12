@@ -4,7 +4,7 @@ const cors = require("cors");
 const { PORT } = require("./config");
 //const db = require("./db/index.js");
 const categoriaRouter = require("./routes/CategoriaRouter");
-const registerRouter = require("./routes/RegisterRouter");
+const usuarioRouter = require("./routes/UsuarioRouter");
 const loginRouter = require("./routes/LoginRouter");
 
 const app = express();
@@ -22,7 +22,7 @@ app.get("/api", (_, res) => {
 });   
  
 app.use("/api/categorias", categoriaRouter); 
-app.use("/api/register", registerRouter);  
+app.use("/api/usuarios", usuarioRouter);  
 app.use("/api/auth", loginRouter);  
 
 app.listen(PORT, () => {

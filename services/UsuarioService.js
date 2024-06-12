@@ -21,6 +21,11 @@ class UsuarioService {
         return res;
     }
 
+    async findWithRol() {
+        const res = await models.Usuario.findAll({ include: "Rol" });
+        return res;
+    }
+
     async findOne(id) {
         const res = await models.Usuario.findByPk(id);
         return res;
@@ -32,7 +37,7 @@ class UsuarioService {
     }
 
     async createDefault(data) {
-        data.id_rol= rolDefault;
+        data.id_rol = rolDefault;
         const usuario = models.Usuario.create(data);
         return usuario;
     }
