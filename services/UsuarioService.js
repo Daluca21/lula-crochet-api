@@ -1,5 +1,6 @@
 const db = require("../db/index")
 const models = db.sequelize.models;
+const rolDefault = 3;
 
 class UsuarioService {
     constructor() { }
@@ -20,6 +21,11 @@ class UsuarioService {
         return res;
     }
 
+    async findWithRol() {
+        const res = await models.Usuario.findAll({ include: "Rol" });
+        return res;
+    }
+
     async findOne(id) {
         const res = await models.Usuario.findByPk(id);
         return res;
@@ -28,6 +34,12 @@ class UsuarioService {
     async create(data) {
         const res = await models.Usuario.create(data);
         return res;
+    }
+
+    async createDefault(data) {
+        data.id_rol = rolDefault;
+        const usuario = models.Usuario.create(data);
+        return usuario;
     }
 
     async update(id, data) {
