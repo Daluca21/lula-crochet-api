@@ -17,7 +17,7 @@ class OfertaService {
     }
 
     async create(data) {
-        if(!data.hasOwnProperty("id_productos")) {
+        if (!data.hasOwnProperty("id_productos")) {
             let msg = ```Formato incorrecto para crear una oferta
             \nDebe agregar la propiedad 'id_productos' junto con los id de los productos asociados```
             throw new Error(msg);
