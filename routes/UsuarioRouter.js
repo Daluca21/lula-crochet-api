@@ -6,10 +6,12 @@ const onlyAdmins = require("../middlewares/onlyAdmins");
 
 router.post("/register", usuarioController.register);
 router.get("/", verifyToken, usuarioController.get);
+router.get("/admins", usuarioController.getAdmins);
 router.get("/:id", verifyToken, usuarioController.getById);
 router.put("/:id", verifyToken, usuarioController.update);
 router.post("/", onlyAdmins, verifyToken, usuarioController.create);
 router.delete("/:id", onlyAdmins, verifyToken, usuarioController._delete);
 router.post("/find", usuarioController.getByCorreo);
+
 
 module.exports = router;

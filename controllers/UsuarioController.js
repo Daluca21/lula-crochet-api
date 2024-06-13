@@ -84,6 +84,15 @@ const getByCorreo = async (req, res) => {
     }
 };
 
+const getAdmins = async (req, res) => {
+    try {
+        const response = await service.findAdmins();
+        res.json({success: true, response});
+    } catch (error) {
+        res.status(500).send({ success: false, message: error.message });
+    }
+};
+
 const update = async (req, res) => {
     try {
         const { id } = req.params;
@@ -116,5 +125,6 @@ module.exports = {
     get,
     getById,
     getByCorreo,
+    getAdmins,
     _delete
 }

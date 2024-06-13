@@ -1,4 +1,5 @@
 const db = require("../db/index")
+const { Op } = require("sequelize");
 const models = db.sequelize.models;
 const rolDefault = 0;
 
@@ -11,7 +12,7 @@ class UsuarioService {
         if (params) {
             query.where = params;
         }
-
+        query.attributes = { exclude: ['contrasena'] }
         const res = await models.Usuario.findAll(query);
         return res;
     }
@@ -22,7 +23,24 @@ class UsuarioService {
     }
 
     async findWithRol() {
-        const res = await models.Usuario.findAll({ include: "Rol" });
+        const res = await models.Usuario.findAll({
+            include: "Rol",
+            attributes: {
+                exclude: ['contrasena']
+            }
+        });
+        return res;
+    }
+
+    async findAdmins() {
+        const res = await models.Usuario.findAll({
+            where: {
+                'id_rol': { [Op.ne]: 0 },
+            },
+            attributes: {
+                exclude: ['contrasena']
+            }
+        });
         return res;
     }
 
