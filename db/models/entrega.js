@@ -36,6 +36,7 @@ module.exports = module.exports = (sequelize, DataTypes, Model) => {
       sequelize, 
       modelName: 'Entrega', 
       tableName: 'Entrega',
+      freezeTableName: true,
       createdAt: false,
       updatedAt: false 
     },

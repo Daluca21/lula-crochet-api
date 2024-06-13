@@ -11,7 +11,13 @@ class ProductoService {
     }
 
     async findComplete() {
-        const res = await models.Producto.findAll({ include: ['Modelo'] });
+        console.log("a");
+        const res = await models.Producto.findAll({
+            include: {
+                model: models.Modelo,
+                include : models.Categoria
+            }
+        });
         const descuentos = res.map(async (producto) => {
             const descuento = await this.getDescuento(producto);
             producto.setDataValue('descuento', descuento);

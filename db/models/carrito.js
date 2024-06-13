@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes, Model) => {
             sequelize,
             modelName: 'Carrito',
             tableName: 'Carrito',
+            freezeTableName: true,
             createdAt: false,
             updatedAt: false
         }
