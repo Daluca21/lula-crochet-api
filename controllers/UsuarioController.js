@@ -17,8 +17,7 @@ const register = (req, res) => {
         const correo = req.body.correo;
         const data = service.createDefault(req.body);
 
-        const token = jwt.sign({ correo }, SECRET_KEY, { expiresIn: "1h" });
-        return res.json({ success: true, token: token, data: data });
+        return res.json({ success: true, data: data });
 
     } catch (error) {
         console.log(error);
