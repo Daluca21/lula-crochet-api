@@ -71,6 +71,20 @@ const getById = async (req, res) => {
     }
 };
 
+const getByCorreo = async (req, res) => {
+    try {
+        const { correo } = req.body;
+        const response = await service.findOne(correo);
+        if(response){
+            res.json({success: true, response});
+        }else{
+            res.json({success: false, response});
+        }
+    } catch (error) {
+        res.status(500).send({ success: false, message: error.message });
+    }
+};
+
 const update = async (req, res) => {
     try {
         const { id } = req.params;
@@ -102,5 +116,6 @@ module.exports = {
     update,
     get,
     getById,
+    getByCorreo,
     _delete
 }
