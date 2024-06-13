@@ -13,13 +13,22 @@ const FIREBASE = {
     appId: process.env.APP_ID
 };
 
+const EMAIL = {
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    redirectUri: process.env.REDIRECT_URI,
+    refreshToken: process.env.REFRESH_TOKEN,
+    user: process.env.EMAIL_USER,
+    service: process.env.EMAIL_SERVICE
+}
 
 module.exports = {
     PORT,
     MODE,
-    SECRET_KEY,
-    // EMAIL,
+    EMAIL,
     FIREBASE,
+    SECRET_KEY,
+    URL_FRONT: process.env.URL_FRONT,
     DB_USER: process.env.DB_USER,
     DB_PASSWORD: process.env.DB_PASSWORD,
     DB_HOST: process.env.DB_HOST,

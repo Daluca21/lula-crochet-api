@@ -6,5 +6,8 @@ const verifyToken = require("../middlewares/verifyToken");
 
 router.get("/me", verifyToken, loginController.me);
 router.post("/login", loginController.login);
+router.post("/forgot-password", loginController.solicitarToken);
+//router.get("/reset/:token", loginController.validarToken);
+//router.post("/reset/:token", loginController.cambiarContrasena);
 
 module.exports = router;

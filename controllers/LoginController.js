@@ -1,8 +1,12 @@
 const UsuarioService = require("../services/UsuarioService");
+const TokenService = require("../services/TokenService");
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
-const { SECRET_KEY } = require("../config");
+const crypto = require("crypto");
+const { SECRET_KEY , URL_FRONT} = require("../config");
+const { sendEmail } = require("../utils/sendEmail");
 const service = new UsuarioService();
+const tokenService = new TokenService();
 
 const login = (req, res) => {
     try {
@@ -24,6 +28,7 @@ const login = (req, res) => {
                     }
                     if (resp) {
                         const token = jwt.sign({ correo }, SECRET_KEY, { expiresIn: "1h" });
+                        user.contrasena = "";
                         return res.json({ success: true, token: token, data: user });
                     } else {
                         return res.status(401).json({ message: "Authentication failed" });
@@ -46,7 +51,41 @@ const me = async (req, res) => {
     }
 };
 
+const solicitarToken = async (req, res) => {
+    const { correo } = req.body;
+    const user = await service.findOne(correo);
+    if (!user) {
+        return res.status(400).json({ message: 'Usuario no encontrado' });
+    }
+    const token = crypto.randomBytes(20).toString('hex');
+    const fechaExpiracion = Date.now() + 3600000; // 1 hora
+    const tokenObj = await tokenService.create({correo : correo, token: token, fechaExpiracion : fechaExpiracion});
+    user.addToken(tokenObj);
+
+    const enlace = `${URL_FRONT}/ReestablecerContrasena/${token}`
+    const mensaje = `
+    Hola, Hemos recibido una solicitud para restablecer la contraseña de tu cuenta. Si realizaste esta solicitud, haz clic en el siguiente enlace para restablecer tu contraseña:
+                    
+    ${enlace}
+                    
+    Si no solicitaste un restablecimiento de contraseña, por favor ignora este correo. Tu contraseña actual permanecerá sin cambios y no es necesario que realices ninguna acción adicional.`
+   
+    sendEmail({
+        destination : correo,
+        subject : "Cambio de contraseña",
+        text : mensaje
+    })
+
+    res.status(200).json({ message: 'Correo de restablecimiento de contraseña enviado' });
+};
+
+const verificarToken = async (req, res) => { };
+const cambiarContrasena = async (req, res) => { };
+
 module.exports = {
     login,
-    me
+    me,
+    solicitarToken,
+    verificarToken,
+    cambiarContrasena
 }

@@ -1,15 +1,16 @@
 module.exports = (sequelize, DataTypes, Model) => {
   class Usuario extends Model {
     static associate(models) {
-      this.belongsToMany(models.Producto, {through:'Carrito'});
-      this.belongsTo(models.Rol, { foreignKey: 'id_rol'});
+      this.belongsToMany(models.Producto, { through: 'Carrito' });
+      this.belongsTo(models.Rol, { foreignKey: 'id_rol' });
+      this.hasMany(models.Token, { foreignKey: 'correo' });
     }
   }
 
   Usuario.init(
     {
       correo: {
-        type: DataTypes.STRING, 
+        type: DataTypes.STRING,
         primaryKey: true
       },
       cedula: {
@@ -34,8 +35,8 @@ module.exports = (sequelize, DataTypes, Model) => {
       }
     },
     {
-      sequelize, 
-      modelName: 'Usuario', 
+      sequelize,
+      modelName: 'Usuario',
       tableName: 'Usuario',
       freezeTableName: true,
       createdAt: false,
