@@ -1,5 +1,5 @@
 const db = require("../db/index")
-const models = db.sequelize.models.Material;
+const models = db.sequelize.models;
 
 class MaterialService {
     constructor() { }

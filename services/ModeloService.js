@@ -1,4 +1,7 @@
 const db = require("../db/index")
+const { uploadFile, deleteFile } = require('../utils/adminFirebase');
+const FotoService = require("./FotoService");
+const fotoService = new FotoService();
 const models = db.sequelize.models;
 
 class ModeloService {
@@ -14,12 +17,25 @@ class ModeloService {
         return res;
     }
 
-    async create(data) {
+    async create(data, imagenes) {
         const modelo = await models.Modelo.create(data);
-        data.materiales.forEach(async (id_material) => {
+
+        const crearMateriales = data.materiales.map(async (id_material) => {
             const material = await models.Material.findByPk(id_material);
-            modelo.addMaterial(material); 
+            await modelo.addMaterial(material);
         });
+        await Promise.all(crearMateriales);
+    
+        if(imagenes && imagenes.length > 0){
+            const crearImagenes = imagenes.map(async (imagen) => {
+                const { ref, downloadURL } = await uploadFile(imagen);
+                const foto = await fotoService.create({ url: downloadURL });
+                await modelo.addFoto(foto);
+                console.log(`Image added: ${downloadURL}`);
+            });
+            await Promise.all(crearImagenes);
+        }
+
         return modelo;
     }
 

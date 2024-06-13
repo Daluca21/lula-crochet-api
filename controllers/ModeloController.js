@@ -13,7 +13,8 @@ const get = async (req, res) => {
 const create = async (req, res) => {
   try {
     console.log(req.body);
-    const response = await service.create(req.body);
+    const imagenes = req.files;
+    const response = await service.create(req.body, imagenes);
     res.json({ success: true, data: response });
   } catch (error) {
     res.status(500).send({ success: false, message: error.message });

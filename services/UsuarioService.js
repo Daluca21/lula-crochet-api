@@ -1,6 +1,6 @@
 const db = require("../db/index")
 const models = db.sequelize.models;
-const rolDefault = 3;
+const rolDefault = 0;
 
 class UsuarioService {
     constructor() { }

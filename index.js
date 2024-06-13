@@ -36,7 +36,7 @@ app.use("/api/productos", productoRouter);
 app.use("/api/ofertas", ofertaRouter);
 app.use("/api/usuarios", usuarioRouter);  
 app.use("/api/auth", loginRouter);  
-app.use("/api/rol", rolRouter);  
+app.use("/api/rol", rolRouter); 
 
 app.listen(PORT, () => {
     console.log(`Server start with port ${PORT}`);
