@@ -1,16 +1,23 @@
 const db = require("../db/index")
 const models = db.sequelize.models;
+const {Op} = require("sequelize");
 
 class TokenService {
     constructor() { }
 
-    async find() {
-        const res = await models.Token.findAll();
+    async findOne(id) {
+        const res = await models.Token.findByPk(id);
         return res;
     }
 
-    async findOne(id) {
-        const res = await models.Token.findByPk(id);
+    async find(params) {
+        const query = {};
+
+        if (params) {
+            query.where = params;
+        }
+
+        const res = await models.Token.findAll(query);
         return res;
     }
 
@@ -29,6 +36,16 @@ class TokenService {
         const model = await this.findOne(id);
         await model.destroy();
         return { deleted: true };
+    }
+
+    async isValid(token) {
+        const res = await models.Token.findOne({
+            where: {
+                token: { [Op.eq]: token },
+                fechaExpiracion: { [Op.gt]: new Date() }
+            }
+        });
+        return res;
     }
 }
 
