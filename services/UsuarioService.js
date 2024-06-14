@@ -45,7 +45,14 @@ class UsuarioService {
     }
 
     async findOne(id) {
-        const res = await models.Usuario.findByPk(id);
+        const res = await models.Usuario.findByPk(id, {
+            include: {
+                model: models.Producto,
+                through: {
+                    attributes: ["cantidad"],
+                },
+            }
+        });
         return res;
     }
 

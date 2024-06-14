@@ -80,6 +80,16 @@ const removeToCarrito = async (req, res) => {
   }
 };
 
+const getCarrito = async (req, res) => {
+  try {
+    const { correo } = req.params;
+    const response = await service.getCarrito(correo);
+    res.json({ success: true, data: response });
+  } catch (error) {
+    res.status(500).send({ success: false, message: error.message });
+  }
+};
+
 module.exports = {
   create,
   get,
@@ -88,5 +98,6 @@ module.exports = {
   update,
   _delete,
   addToCarrito,
-  removeToCarrito
+  removeToCarrito,
+  getCarrito
 };

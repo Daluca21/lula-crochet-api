@@ -11,6 +11,7 @@ router
   .put("/:id", productoController.update)
   .delete("/:id", productoController._delete)
   .post("/carrito", productoController.addToCarrito)
-  .delete("/carrito/:correo/:id", productoController.removeToCarrito);
+  .delete("/carrito/:correo/:id", productoController.removeToCarrito)
+  .get("/carrito/:correo", productoController.getCarrito);
 
 module.exports = router;

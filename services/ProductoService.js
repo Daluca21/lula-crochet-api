@@ -132,6 +132,11 @@ class ProductoService {
         return { deleted: true };
     }
 
+    async getCarrito(correo) {
+        const usuario = await serviceUsuario.findOne(correo);
+        return usuario.Productos;
+    }
+
 }
 
 module.exports = ProductoService;
