@@ -1,6 +1,8 @@
 const db = require("../db/index");
 const { Op } = require("sequelize");
 const models = db.sequelize.models;
+const UsuarioService = require("./UsuarioService");
+const serviceUsuario = new UsuarioService();
 
 class ProductoService {
     constructor() { }
@@ -66,6 +68,38 @@ class ProductoService {
         }
         return 0;
     }
+
+    async addToCarrito(data) {
+        if (!data.hasOwnProperty("id_usuario") || !data.hasOwnProperty("id_producto") || !data.hasOwnProperty("cantidad")) {
+            let msg = "Formato incorrecto para añadir un producto al carrito del usuario. Hace falta:";
+            if(!data.hasOwnProperty("id_usuario")) {
+                msg += "\nAgregar la propiedad 'id_usuario' con el valor de id del usuario.";
+            }
+            if(!data.hasOwnProperty("id_producto")) {
+                msg += "\nAgregar la propiedad 'id_producto' con el valor de id del producto que desea añadir al carrito.";
+            }
+            if(!data.hasOwnProperty("cantidad")) {
+                msg += "\nAgregar la propiedad 'cantidad' con el valor de la cantidad de productos que desea.";
+            }
+            throw new Error(msg);
+        }
+        const usuario = await serviceUsuario.findOne(data["id_usuario"]);
+        const producto = await this.findOne(data["id_producto"]);
+        const res = await usuario.addProducto(producto, { through: { cantidad: data["cantidad"] } });;
+        return res;
+    }
+
+    async removeToCarrito(correo, id) {
+        const model = await models.Carrito.findOne({
+            where: { 
+                ProductoId: id,
+                UsuarioCorreo: correo
+            }
+        });
+        await model.destroy();
+        return { deleted: true };
+    }
+
 }
 
 module.exports = ProductoService;

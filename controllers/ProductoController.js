@@ -50,6 +50,24 @@ const _delete = async (req, res) => {
   }
 };
 
+const addToCarrito = async (req, res) => {
+  try {
+    const response = await service.addToCarrito(req.body);
+    res.json({ success: true, data: response });
+  } catch (error) {
+    res.status(500).send({ success: false, message: error.message });
+  }
+};
+
+const removeToCarrito = async (req, res) => {
+  try {
+    const { correo, id } = req.params;
+    const response = await service.removeToCarrito(correo, id);
+    res.json({ success: true, data: response });
+  } catch (error) {
+    res.status(500).send({ success: false, message: error.message });
+  }
+};
 
 module.exports = {
   create,
@@ -57,4 +75,6 @@ module.exports = {
   getById,
   update,
   _delete,
+  addToCarrito,
+  removeToCarrito
 };
