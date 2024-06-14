@@ -45,7 +45,7 @@ class ProductoService {
         };
 
         const res = await models.Producto.findAll(query);
-        
+
         const productosConDescuento = [];
         const descuentos = res.map(async (producto) => {
             const descuento = await this.getDescuento(producto);
@@ -85,6 +85,8 @@ class ProductoService {
 
     async findOne(id) {
         const res = await models.Producto.findByPk(id);
+        const descuento = await this.getDescuento(res);
+        res.setDataValue('descuento', descuento);
         return res;
     }
 
