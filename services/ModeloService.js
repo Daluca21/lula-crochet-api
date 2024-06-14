@@ -8,7 +8,14 @@ class ModeloService {
     constructor() { }
 
     async find() {
-        const res = await models.Modelo.findAll();
+        const res = await models.Modelo.findAll({
+            include: [
+                {
+                    model: models.Foto,
+                    through: models.Modelo_Foto
+                }
+            ]
+        });
         return res;
     }
 
@@ -25,8 +32,8 @@ class ModeloService {
             await modelo.addMaterial(material);
         });
         await Promise.all(crearMateriales);
-    
-        if(imagenes && imagenes.length > 0){
+
+        if (imagenes && imagenes.length > 0) {
             const crearImagenes = imagenes.map(async (imagen) => {
                 const { ref, downloadURL } = await uploadFile(imagen);
                 const foto = await fotoService.create({ url: downloadURL });
