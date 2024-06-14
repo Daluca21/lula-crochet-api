@@ -1,6 +1,16 @@
 const ProductoService = require("../services/ProductoService");
 const service = new ProductoService();
 
+
+const create = async (req, res) => {
+  try {
+    const response = await service.create(req.body);
+    res.json({ success: true, data: response });
+  } catch (error) {
+    res.status(500).send({ success: false, message: error.message });
+  }
+};
+
 const get = async (req, res) => {
   try {
     const response = await service.findComplete();
@@ -10,10 +20,11 @@ const get = async (req, res) => {
   }
 };
 
-const create = async (req, res) => {
+const getByCategoria = async (req, res) => {
   try {
-    const response = await service.create(req.body);
-    res.json({ success: true, data: response });
+    const { id } = req.params;
+    const response = await service.findByCategoria(id);
+    res.json(response);
   } catch (error) {
     res.status(500).send({ success: false, message: error.message });
   }
@@ -72,6 +83,7 @@ const removeToCarrito = async (req, res) => {
 module.exports = {
   create,
   get,
+  getByCategoria,
   getById,
   update,
   _delete,

@@ -86,9 +86,9 @@ const solicitarToken = async (req, res) => {
 const verificarToken = async (req, res) => {
     const { token } = req.params;
     try {
-        const valido = await tokenService.isValid(token);
-        if(!valido){
-           return  new Error("Token no existe o ya expiró");
+        const valido = await tokenService.findValids(token);
+        if (valido === null || valido === undefined) {
+            throw new Error("Token no existe o ya expiró");
         }
         res.status(200).json({ succes: true, token: token });
     } catch (error) {
@@ -96,7 +96,28 @@ const verificarToken = async (req, res) => {
     }
 };
 
-const cambiarContrasena = async (req, res) => { };
+const cambiarContrasena = async (req, res) => {
+    try {
+        const { token } = req.params;
+
+        if (!req.body.contrasena) {
+            throw new Error("Debe indicar una contraseña");
+        }
+
+        const valido = await tokenService.findValids(token);
+
+        if (valido === null || valido === undefined) {
+            throw new Error("Token no existe o ya expiró");
+        }
+
+        req.body.contrasena = bcrypt.hashSync(req.body.contrasena, 10);
+        const data = await service.update(valido.correo, req.body);
+        await tokenService.delete(valido.id);
+        res.status(200).json({ success: true, message: 'Contraseña actualizada correctamente' });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
 
 module.exports = {
     login,

@@ -6,6 +6,7 @@ const productoController = require("../controllers/ProductoController");
 router
   .get("/", productoController.get)
   .get("/:id", productoController.getById)
+  .get("/categoria/:id", productoController.getByCategoria)
   .post("/", productoController.create)
   .put("/:id", productoController.update)
   .delete("/:id", productoController._delete)
