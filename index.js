@@ -3,7 +3,7 @@ const cors = require("cors");
 
 const { PORT } = require("./config");
 const firebase = require("./config/firebase");
-//const db = require("./db/index.js");
+const db = require("./db/index.js");
 const categoriaRouter = require("./routes/CategoriaRouter");
 const materialRouter = require("./routes/MaterialRouter");
 const modeloRouter = require("./routes/ModeloRouter");

@@ -65,9 +65,9 @@ const solicitarToken = async (req, res) => {
 
         const enlace = `${URL_FRONT}/ReestablecerContrasena?token=${token}`
         const mensaje = `
-        Hola, Hemos recibido una solicitud para restablecer la contraseña de tu cuenta. Si realizaste esta solicitud, haz clic en el siguiente enlace para restablecer tu contraseña:
+        Hola, Hemos recibido una solicitud para restablecer la contraseña de tu cuenta. Si realizaste esta solicitud, haz clic en el siguiente enlace para restablecer tu contraseña: 
                         
-        ${enlace}
+        ${enlace}, recuerda solo tienes 1 hora para hacer el cambio.
                         
         Si no solicitaste un restablecimiento de contraseña, por favor ignora este correo. Tu contraseña actual permanecerá sin cambios y no es necesario que realices ninguna acción adicional.`
 
