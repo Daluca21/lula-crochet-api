@@ -20,6 +20,25 @@ const get = async (req, res) => {
   }
 };
 
+const getOfertasById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const response = await service.getOfertasById(id);
+    res.json(response);
+  } catch (error) {
+    res.status(500).send({ success: false, message: error.message });
+  }
+};
+
+const getWithOferta = async (req, res) => {
+  try {
+    const response = await service.findWithOferta();
+    res.json(response);
+  } catch (error) {
+    res.status(500).send({ success: false, message: error.message });
+  }
+};
+
 const getByCategoria = async (req, res) => {
   try {
     const { id } = req.params;
@@ -94,6 +113,8 @@ module.exports = {
   create,
   get,
   getByCategoria,
+  getOfertasById,
+  getWithOferta,
   getById,
   update,
   _delete,

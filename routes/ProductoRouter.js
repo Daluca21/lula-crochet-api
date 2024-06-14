@@ -3,6 +3,9 @@ const router = express.Router();
 
 const productoController = require("../controllers/ProductoController");
 
+router.get("/:id/ofertas", productoController.getOfertasById);
+router.get("/ofertas", productoController.getWithOferta);
+
 router
   .get("/", productoController.get)
   .get("/:id", productoController.getById)

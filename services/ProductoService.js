@@ -36,14 +36,39 @@ class ProductoService {
         return res;
     }
 
+    async findWithOferta() {
+        const query = {
+            include: [
+                {
+                    model: models.Modelo,
+                    include: models.Categoria
+                }
+            ]
+        };
+
+        const res = await models.Producto.findAll(query);
+
+        const productosConDescuento = [];
+        const descuentos = res.map(async (producto) => {
+            const descuento = await this.getDescuento(producto);
+            if (descuento > 0) {
+                producto.setDataValue('descuento', descuento);
+                productosConDescuento.push(producto);
+            }
+        });
+
+        await Promise.all(descuentos);
+        return productosConDescuento;
+    }
+
     async findByCategoria(id) {
         const query = {
             where: {},
             include: [
                 {
                     model: models.Modelo,
-                    where : {
-                        'id_categoria' : id
+                    where: {
+                        'id_categoria': id
                     },
                     right: true,
                     include: models.Categoria
@@ -62,6 +87,8 @@ class ProductoService {
 
     async findOne(id) {
         const res = await models.Producto.findByPk(id);
+        const descuento = await this.getDescuento(res);
+        res.setDataValue('descuento', descuento);
         return res;
     }
 
@@ -137,6 +164,22 @@ class ProductoService {
         return usuario.Productos;
     }
 
+    async getOfertasById(id) {
+        const now = new Date();
+        const producto = await this.findOne(id);
+        const ofertas = await producto.getOferta({
+            where: {
+                fechaInicio: {
+                    [Op.lte]: now
+                },
+                fechaFin: {
+                    [Op.gte]: now
+                }
+            },
+            order: [['descuento', 'DESC']]
+        });
+        return ofertas;
+    }
 }
 
 module.exports = ProductoService;
