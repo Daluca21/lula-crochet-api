@@ -34,6 +34,31 @@ class ProductoService {
         return res;
     }
 
+    async findWithOferta() {
+        const query = {
+            include: [
+                {
+                    model: models.Modelo,
+                    include: models.Categoria
+                }
+            ]
+        };
+
+        const res = await models.Producto.findAll(query);
+        
+        const productosConDescuento = [];
+        const descuentos = res.map(async (producto) => {
+            const descuento = await this.getDescuento(producto);
+            if (descuento > 0) {
+                producto.setDataValue('descuento', descuento);
+                productosConDescuento.push(producto);
+            }
+        });
+
+        await Promise.all(descuentos);
+        return productosConDescuento;
+    }
+
     async findByCategoria(id) {
         const query = {
             where: {},

@@ -30,6 +30,14 @@ const getOfertasById = async (req, res) => {
   }
 };
 
+const getWithOferta = async (req, res) => {
+  try {
+    const response = await service.findWithOferta();
+    res.json(response);
+  } catch (error) {
+    res.status(500).send({ success: false, message: error.message });
+  }
+};
 
 const getByCategoria = async (req, res) => {
   try {
@@ -78,6 +86,7 @@ module.exports = {
   get,
   getByCategoria,
   getOfertasById,
+  getWithOferta,
   getById,
   update,
   _delete,
