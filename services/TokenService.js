@@ -38,7 +38,7 @@ class TokenService {
         return { deleted: true };
     }
 
-    async isValid(token) {
+    async findValids(token) {
         const res = await models.Token.findOne({
             where: {
                 token: { [Op.eq]: token },
