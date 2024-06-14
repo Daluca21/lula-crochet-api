@@ -10,14 +10,46 @@ class ProductoService {
         return res;
     }
 
-    async findComplete() {
-        console.log("a");
-        const res = await models.Producto.findAll({
-            include: {
-                model: models.Modelo,
-                include : models.Categoria
-            }
+    async findComplete(params) {
+        const query = {
+            where: {},
+            include: [
+                {
+                    model: models.Modelo,
+                    include: models.Categoria
+                }
+            ]
+        };
+
+        if (params) {
+            query.where = params;
+        }
+
+        const res = await models.Producto.findAll(query);
+        const descuentos = res.map(async (producto) => {
+            const descuento = await this.getDescuento(producto);
+            producto.setDataValue('descuento', descuento);
         });
+        await Promise.all(descuentos);
+        return res;
+    }
+
+    async findByCategoria(id) {
+        const query = {
+            where: {},
+            include: [
+                {
+                    model: models.Modelo,
+                    where : {
+                        'id_categoria' : id
+                    },
+                    right: true,
+                    include: models.Categoria
+                }
+            ]
+        };
+
+        const res = await models.Producto.findAll(query);
         const descuentos = res.map(async (producto) => {
             const descuento = await this.getDescuento(producto);
             producto.setDataValue('descuento', descuento);
