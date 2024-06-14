@@ -71,7 +71,7 @@ const solicitarToken = async (req, res) => {
                         
         Si no solicitaste un restablecimiento de contraseña, por favor ignora este correo. Tu contraseña actual permanecerá sin cambios y no es necesario que realices ninguna acción adicional.`
 
-        sendEmail({
+        await sendEmail({
             destination: correo,
             subject: "Cambio de contraseña",
             text: mensaje
