@@ -9,8 +9,8 @@ router.get("/", verifyToken, usuarioController.get);
 router.get("/admins", usuarioController.getAdmins);
 router.get("/:id", verifyToken, usuarioController.getById);
 router.put("/:id", verifyToken, usuarioController.update);
-router.post("/", onlyAdmins, verifyToken, usuarioController.create);
-router.delete("/:id", onlyAdmins, verifyToken, usuarioController._delete);
+router.post("/",  verifyToken, usuarioController.create);
+router.delete("/:id", verifyToken, usuarioController._delete);
 router.post("/find", usuarioController.getByCorreo);
 
 
