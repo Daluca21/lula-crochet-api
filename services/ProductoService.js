@@ -40,8 +40,8 @@ class ProductoService {
             include: [
                 {
                     model: models.Modelo,
-                    where : {
-                        'id_categoria' : id
+                    where: {
+                        'id_categoria': id
                     },
                     right: true,
                     include: models.Categoria
@@ -97,6 +97,23 @@ class ProductoService {
             return ofertas[0].descuento;
         }
         return 0;
+    }
+
+    async getOfertasById(id) {
+        const now = new Date();
+        const producto = await this.findOne(id);
+        const ofertas = await producto.getOferta({
+            where: {
+                fechaInicio: {
+                    [Op.lte]: now
+                },
+                fechaFin: {
+                    [Op.gte]: now
+                }
+            },
+            order: [['descuento', 'DESC']]
+        });
+        return ofertas;
     }
 }
 
