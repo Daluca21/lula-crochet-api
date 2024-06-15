@@ -36,7 +36,10 @@ class ModeloService {
         if (imagenes && imagenes.length > 0) {
             const crearImagenes = imagenes.map(async (imagen) => {
                 const { ref, downloadURL } = await uploadFile(imagen);
-                const foto = await fotoService.create({ url: downloadURL });
+                const foto = await fotoService.create({
+                    url: downloadURL,
+                    tamanio: data.tamanio
+                });
                 await modelo.addFoto(foto);
                 console.log(`Image added: ${downloadURL}`);
             });
@@ -58,10 +61,10 @@ class ModeloService {
         return { deleted: true };
     }
 
-    async getFotos(id){
+    async getFotos(id) {
         const res = await models.Modelo.findOne({
-            where : {
-                id : id
+            where: {
+                id: id
             },
             include: [
                 {

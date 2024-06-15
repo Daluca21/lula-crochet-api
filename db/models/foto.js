@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes, Model) => {
       url: {
         type: DataTypes.STRING,
         allowNull: false
+      },
+      tamanio: {
+        type: DataTypes.INTEGER,
+        allowNull: false
       }
     },
     {
