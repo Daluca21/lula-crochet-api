@@ -2,7 +2,9 @@ const db = require("../db/index");
 const { Op } = require("sequelize");
 const models = db.sequelize.models;
 const UsuarioService = require("./UsuarioService");
+const ModeloService = require("./ModeloService");
 const serviceUsuario = new UsuarioService();
+const serviceModelo = new ModeloService();
 
 class ProductoService {
     constructor() { }
@@ -28,11 +30,15 @@ class ProductoService {
         }
 
         const res = await models.Producto.findAll(query);
-        const descuentos = res.map(async (producto) => {
+        const descuentosYFotos = res.map(async (producto) => {
             const descuento = await this.getDescuento(producto);
+            const fotos = await serviceModelo.getFotos(producto.id_modelo);
             producto.setDataValue('descuento', descuento);
+            producto.setDataValue('fotos', fotos);
         });
-        await Promise.all(descuentos);
+
+        await Promise.all(descuentosYFotos);
+        
         return res;
     }
 

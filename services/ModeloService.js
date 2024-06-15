@@ -57,6 +57,22 @@ class ModeloService {
         await model.destroy();
         return { deleted: true };
     }
+
+    async getFotos(id){
+        const res = await models.Modelo.findOne({
+            where : {
+                id : id
+            },
+            include: [
+                {
+                    model: models.Foto,
+                    through: models.Modelo_Foto
+                }
+            ]
+        });
+        console.log(res);
+        return res.Fotos;
+    }
 }
 
 module.exports = ModeloService;
