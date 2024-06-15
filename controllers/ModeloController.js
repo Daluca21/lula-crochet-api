@@ -13,6 +13,7 @@ const get = async (req, res) => {
 const create = async (req, res) => {
   try {
     console.log(req.body);
+    req.body.nombre = req.body.nombre.toUpperCase();
     const imagenes = req.files;
     const response = await service.create(req.body, imagenes);
     res.json({ success: true, data: response });
@@ -34,6 +35,7 @@ const getById = async (req, res) => {
 const update = async (req, res) => {
   try {
     const { id } = req.params;
+    req.body.nombre = req.body.nombre.toUpperCase();
     const body = req.body;
     const response = await service.update(id, body);
     res.json({ success: true, data: response });

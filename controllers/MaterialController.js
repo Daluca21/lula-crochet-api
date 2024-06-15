@@ -12,6 +12,8 @@ const get = async (req, res) => {
 
 const create = async (req, res) => {
   try {
+    req.body.nombre = req.body.nombre.toUpperCase();
+
     const response = await service.create(req.body);
     res.json({ success: true, data: response });
   } catch (error) {
@@ -32,6 +34,7 @@ const getById = async (req, res) => {
 const update = async (req, res) => {
   try {
     const { id } = req.params;
+    req.body.nombre = req.body.nombre.toUpperCase();
     const body = req.body;
     const response = await service.update(id, body);
     res.json({ success: true, data: response });

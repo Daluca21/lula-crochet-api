@@ -13,7 +13,6 @@ const ofertaRouter = require("./routes/OfertaRouter");
 const usuarioRouter = require("./routes/UsuarioRouter");
 const loginRouter = require("./routes/LoginRouter");
 const rolRouter = require("./routes/RolRouter");
-const { capture } = require("./middlewares/errorHandler");
 
 const app = express();
 

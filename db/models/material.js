@@ -14,10 +14,11 @@ module.exports = (sequelize, DataTypes, Model) => {
       },
       nombre: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique : true
       },
       grosor: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: false
       }
     },
