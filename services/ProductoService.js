@@ -20,7 +20,19 @@ class ProductoService {
             include: [
                 {
                     model: models.Modelo,
-                    include: models.Categoria
+                    include: [
+                        {
+                            model: models.Categoria
+                        },
+                        {
+                            model: models.Foto,
+                            through: models.Modelo_Foto
+                        },
+                        {
+                            model: models.Material,
+                            through: models.Modelo_Material
+                        }
+                    ]
                 }
             ]
         };
@@ -38,7 +50,7 @@ class ProductoService {
         });
 
         await Promise.all(descuentosYFotos);
-        
+
         return res;
     }
 
@@ -141,13 +153,13 @@ class ProductoService {
     async addToCarrito(data) {
         if (!data.hasOwnProperty("id_usuario") || !data.hasOwnProperty("id_producto") || !data.hasOwnProperty("cantidad")) {
             let msg = "Formato incorrecto para añadir un producto al carrito del usuario. Hace falta:";
-            if(!data.hasOwnProperty("id_usuario")) {
+            if (!data.hasOwnProperty("id_usuario")) {
                 msg += "\nAgregar la propiedad 'id_usuario' con el valor de id del usuario.";
             }
-            if(!data.hasOwnProperty("id_producto")) {
+            if (!data.hasOwnProperty("id_producto")) {
                 msg += "\nAgregar la propiedad 'id_producto' con el valor de id del producto que desea añadir al carrito.";
             }
-            if(!data.hasOwnProperty("cantidad")) {
+            if (!data.hasOwnProperty("cantidad")) {
                 msg += "\nAgregar la propiedad 'cantidad' con el valor de la cantidad de productos que desea.";
             }
             throw new Error(msg);
@@ -160,7 +172,7 @@ class ProductoService {
 
     async removeToCarrito(correo, id) {
         const model = await models.Carrito.findOne({
-            where: { 
+            where: {
                 ProductoId: id,
                 UsuarioCorreo: correo
             }

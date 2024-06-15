@@ -13,6 +13,10 @@ class ModeloService {
                 {
                     model: models.Foto,
                     through: models.Modelo_Foto
+                },
+                {
+                    model: models.Material,
+                    through: models.Modelo_Material
                 }
             ]
         });
@@ -27,8 +31,13 @@ class ModeloService {
     async create(data, imagenes) {
         const modelo = await models.Modelo.create(data);
 
-        const crearMateriales = data.materiales.map(async (id_material) => {
-            const material = await models.Material.findByPk(id_material);
+        const crearMateriales = data.materiales.map(async (nombre) => {
+            const material = await models.Material.findOne({
+                where : {
+                    "nombre" : nombre
+                }
+            });
+
             await modelo.addMaterial(material);
         });
         await Promise.all(crearMateriales);
