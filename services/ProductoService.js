@@ -57,8 +57,10 @@ class ProductoService {
         const productosConDescuento = [];
         const descuentos = res.map(async (producto) => {
             const descuento = await this.getDescuento(producto);
+            const fotos = await serviceModelo.getFotos(producto.id_modelo);
             if (descuento > 0) {
                 producto.setDataValue('descuento', descuento);
+                producto.setDataValue('fotos', fotos);
                 productosConDescuento.push(producto);
             }
         });
@@ -85,7 +87,9 @@ class ProductoService {
         const res = await models.Producto.findAll(query);
         const descuentos = res.map(async (producto) => {
             const descuento = await this.getDescuento(producto);
+            const fotos = await serviceModelo.getFotos(producto.id_modelo);
             producto.setDataValue('descuento', descuento);
+            producto.setDataValue('fotos', fotos);
         });
         await Promise.all(descuentos);
         return res;
