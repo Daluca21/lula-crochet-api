@@ -17,6 +17,9 @@ class ModeloService {
                 {
                     model: models.Material,
                     through: models.Modelo_Material
+                },
+                {
+                    model: models.Categoria,
                 }
             ]
         });
