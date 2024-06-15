@@ -108,7 +108,28 @@ class ProductoService {
     }
 
     async findOne(id) {
-        const res = await models.Producto.findByPk(id);
+        const query = {
+            where: {},
+            include: [
+                {
+                    model: models.Modelo,
+                    include: [
+                        {
+                            model: models.Categoria
+                        },
+                        {
+                            model: models.Foto,
+                            through: models.Modelo_Foto
+                        },
+                        {
+                            model: models.Material,
+                            through: models.Modelo_Material
+                        }
+                    ]
+                }
+            ]
+        };
+        const res = await models.Producto.findByPk(id, query);
         const descuento = await this.getDescuento(res);
         res.setDataValue('descuento', descuento);
         return res;

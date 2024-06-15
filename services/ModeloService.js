@@ -27,7 +27,21 @@ class ModeloService {
     }
 
     async findOne(id) {
-        const res = await models.Modelo.findByPk(id);
+        const res = await models.Modelo.findByPk(id, {
+            include: [
+                {
+                    model: models.Foto,
+                    through: models.Modelo_Foto
+                },
+                {
+                    model: models.Material,
+                    through: models.Modelo_Material
+                },
+                {
+                    model: models.Categoria,
+                }
+            ]
+        });
         return res;
     }
 
@@ -36,8 +50,8 @@ class ModeloService {
 
         const crearMateriales = data.materiales.map(async (nombre) => {
             const material = await models.Material.findOne({
-                where : {
-                    "nombre" : nombre
+                where: {
+                    "nombre": nombre
                 }
             });
 
