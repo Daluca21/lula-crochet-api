@@ -30,6 +30,7 @@ module.exports = {
     SECRET_KEY,
     ACCESS_TOKEN: process.env.ACCESS_TOKEN,
     URL_FRONT: process.env.URL_FRONT,
+    URL_BACK: process.env.URL_BACK,
     DB_USER: process.env.DB_USER,
     DB_PASSWORD: process.env.DB_PASSWORD,
     DB_HOST: process.env.DB_HOST,

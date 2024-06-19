@@ -1,6 +1,6 @@
 const { client } = require("../config/mercadopago");
 const { Preference } = require("mercadopago");
-const { URL_FRONT } = require("../config/index")
+const { URL_FRONT, URL_BACK } = require("../config/index")
 
 const create = async (req, res) => {
     try {
@@ -20,6 +20,7 @@ const create = async (req, res) => {
                     "failure": `${URL_FRONT}/api`,
                     "pending": `${URL_FRONT}/api`
                 },
+                notification_url: `${URL_BACK}/pagos/webhook`
             }
         })
         res.json(response);
@@ -28,6 +29,11 @@ const create = async (req, res) => {
     }
 };
 
+const recieveWebhook = async (req, res) => {
+    console.log(req.query);
+};
+
 module.exports = {
-    create
+    create, 
+    recieveWebhook
 };
