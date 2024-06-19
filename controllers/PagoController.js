@@ -30,10 +30,11 @@ const create = async (req, res) => {
 };
 
 const recieveWebhook = async (req, res) => {
-    console.log(req.query);
+    console.log(req);
+    res.status(200).send({ req });
 };
 
 module.exports = {
-    create, 
+    create,
     recieveWebhook
 };
