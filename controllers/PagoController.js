@@ -31,7 +31,7 @@ const create = async (req, res) => {
 
 const recieveWebhook = async (req, res) => {
     console.log(req);
-    res.status(200).send({ req });
+    res.status(200).send({ success: true });
 };
 
 module.exports = {
