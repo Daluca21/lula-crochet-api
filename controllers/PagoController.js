@@ -31,7 +31,7 @@ const create = async (req, res) => {
 
 const recieveWebhook = async (req, res) => {
     try{
-        console.log(req["data.id"]); 
+        console.log(req.query["data.id"]); 
         res.json({ success: true });
     }catch(error){
         console.log(error);
