@@ -13,6 +13,7 @@ const ofertaRouter = require("./routes/OfertaRouter");
 const usuarioRouter = require("./routes/UsuarioRouter");
 const loginRouter = require("./routes/LoginRouter");
 const rolRouter = require("./routes/RolRouter");
+const pagoRouter = require("./routes/PagoRouter");
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use("/api/ofertas", ofertaRouter);
 app.use("/api/usuarios", usuarioRouter);
 app.use("/api/auth", loginRouter);
 app.use("/api/rol", rolRouter);
+app.use("/api/pagos", pagoRouter);
 
 app.all('*', (req, res) => {
     res.status(404).send({ message: "ruta invalida" });

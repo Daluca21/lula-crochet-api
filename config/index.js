@@ -28,6 +28,7 @@ module.exports = {
     EMAIL,
     FIREBASE,
     SECRET_KEY,
+    ACCESS_TOKEN: process.env.ACCESS_TOKEN,
     URL_FRONT: process.env.URL_FRONT,
     DB_USER: process.env.DB_USER,
     DB_PASSWORD: process.env.DB_PASSWORD,
