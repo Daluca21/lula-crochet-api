@@ -30,7 +30,7 @@ const create = async (req, res) => {
 };
 
 const recieveWebhook = async (req, res) => {
-    console.log(req);
+    console.log(req.query["data.id"]); 
     res.status(200).send({ success: true });
 };
 
