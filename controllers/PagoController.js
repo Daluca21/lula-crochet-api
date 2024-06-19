@@ -30,8 +30,14 @@ const create = async (req, res) => {
 };
 
 const recieveWebhook = async (req, res) => {
-    console.log(req.query["data.id"]); 
-    res.status(200).send({ success: true });
+    try{
+        console.log(req["data.id"]); 
+        res.json({ success: true });
+    }catch(error){
+        console.log(error);
+        res.status(500).send({ success: false, message: error.message });
+    }
+
 };
 
 module.exports = {
