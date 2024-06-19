@@ -20,7 +20,10 @@ class ModeloService {
                 },
                 {
                     model: models.Categoria,
-                }
+                },
+                {
+                    model: models.Producto
+                },
             ]
         });
         return res;
@@ -39,7 +42,10 @@ class ModeloService {
                 },
                 {
                     model: models.Categoria,
-                }
+                },
+                {
+                    model: models.Producto
+                },
             ]
         });
         return res;
