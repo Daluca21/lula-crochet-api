@@ -185,8 +185,45 @@ class ProductoService {
             }
             throw new Error(msg);
         }
-        const usuario = await serviceUsuario.findOne(data["id_usuario"]);
-        const producto = await this.findOne(data["id_producto"]);
+
+        const idProducto = data["id_producto"];
+        const correo = data["id_usuario"];
+        const cantidad = data["cantidad"];
+
+        const usuario = await serviceUsuario.findOne(correo);
+        const producto = await this.findOne(idProducto);
+
+        const carrito = await models.Carrito.findOne({
+            where: {
+                ProductoId: idProducto,
+                UsuarioCorreo: correo
+            }
+        });
+
+        let cantidadAntigua = 0;
+        let cantidadDisponible = producto.cantidadDisponible;
+        
+        if (carrito !== null) {
+            cantidadAntigua = carrito.cantidad;
+        }
+
+        if ((cantidad - cantidadAntigua) >  cantidadDisponible || cantidad < 0) {
+            let msg = "Error en las cantidades: ";
+            if ((cantidad - cantidadAntigua) > cantidadDisponible) {
+                msg += "\nNo hay suficientes unidades en el inventario";
+            }
+            if (cantidad < 0) {
+                msg += "\nCantidad negativa";
+            }
+            throw new Error(msg);
+        }
+        
+        if (carrito !== null) {
+            await this.removeToCarrito(correo, idProducto);
+            cantidadDisponible = cantidadDisponible + cantidadAntigua;
+        }
+
+        await this.update(idProducto, { cantidadDisponible: cantidadDisponible - cantidad });
         const res = await usuario.addProducto(producto, { through: { cantidad: data["cantidad"] } });;
         return res;
     }
@@ -198,6 +235,10 @@ class ProductoService {
                 UsuarioCorreo: correo
             }
         });
+        let cantidadAntigua = model.cantidad;
+        const producto = await this.findOne(id);
+        let cantidadDisponible = producto.cantidadDisponible;
+        await this.update(id, { cantidadDisponible: cantidadDisponible + cantidadAntigua });
         await model.destroy();
         return { deleted: true };
     }
