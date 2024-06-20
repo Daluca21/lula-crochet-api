@@ -2,7 +2,7 @@ const { client } = require("../config/mercadopago");
 const { Preference } = require("mercadopago");
 const { URL_FRONT, URL_BACK } = require("../config/index");
 const FacturaService = require("../services/FacturaService");
-const service = FacturaService();
+const service = new FacturaService();
 
 const create = async (req, res) => {
     try {
