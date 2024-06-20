@@ -1,7 +1,6 @@
 const ProductoService = require("../services/ProductoService");
 const service = new ProductoService();
 
-
 const create = async (req, res) => {
   try {
     const response = await service.create(req.body);
