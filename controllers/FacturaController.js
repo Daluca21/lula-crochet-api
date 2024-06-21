@@ -36,7 +36,7 @@ const create = async (req, res) => {
                     "failure": `${URL_FRONT}/api`,
                     "pending": `${URL_FRONT}/api`
                 },
-                notification_url: `${URL_BACK}/pagos/webhook`
+                notification_url: `${URL_BACK}/facturas/webhook`
             }
         });
 
