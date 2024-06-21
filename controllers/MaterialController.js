@@ -34,7 +34,9 @@ const getById = async (req, res) => {
 const update = async (req, res) => {
   try {
     const { id } = req.params;
-    req.body.nombre = req.body.nombre.toUpperCase();
+    if (req.body.nombre !== null && req.body.nombre !== undefined) {
+      req.body.nombre = req.body.nombre.toUpperCase();
+    }
     const body = req.body;
     const response = await service.update(id, body);
     res.json({ success: true, data: response });
