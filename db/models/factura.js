@@ -30,6 +30,10 @@ module.exports = module.exports = (sequelize, DataTypes, Model) => {
       tokenDevolucion: {
         type: DataTypes.STRING(256),
         allowNull: false
+      },
+      estaPagado : {
+        type: DataTypes.BOOLEAN,
+        allowNull: false
       }
     },
     {
