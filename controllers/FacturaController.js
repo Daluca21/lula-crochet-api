@@ -48,7 +48,7 @@ const create = async (req, res) => {
         });
 
         //eliminar carrito
-        //await productoService.cleanCarrito(correo);
+        await productoService.cleanCarrito(correo);
 
         res.json({factura, response});
     } catch (error) {
