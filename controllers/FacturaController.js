@@ -68,7 +68,7 @@ const recieveWebhook = async (req, res) => {
             const idFactura = ordenDePago.external_reference;
             console.log(ordenDePago);
             if (status === 'closed') {
-                //service.confirmarPago(idFactura);
+                service.confirmarPago(idFactura);
             } else if (status === 'expired') {
                 //service.devolverProductos(idFactura);
             }

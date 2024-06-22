@@ -47,6 +47,13 @@ class FacturaService {
         await model.destroy();
         return { deleted: true };
     }
+
+    async confirmarPago(id){
+        const data = {
+            estaPagado : true
+        }
+        await this.update(id, data);
+    }
 }
 
 module.exports = FacturaService;
