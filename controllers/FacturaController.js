@@ -53,7 +53,7 @@ const create = async (req, res) => {
 
 const recieveWebhook = async (req, res) => {
     try {
-        console.log(req);
+        console.log(req.body);
         res.json({ success: true });
     } catch (error) {
         console.log(error);
