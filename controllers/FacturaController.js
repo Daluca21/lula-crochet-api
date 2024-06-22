@@ -1,5 +1,5 @@
 const { client } = require("../config/mercadopago");
-const { Preference } = require("mercadopago");
+const { Preference, MerchantOrder, Payment } = require("mercadopago");
 const { URL_FRONT, URL_BACK } = require("../config/index");
 const FacturaService = require("../services/FacturaService");
 const ProductoService = require("../services/ProductoService");
@@ -26,7 +26,7 @@ const create = async (req, res) => {
             };
         }));
 
-        //crear referencia en MercadoPago
+        //crear preferencia en MercadoPago
         const response = await preference.create({
             body: {
                 items: items,
@@ -40,7 +40,11 @@ const create = async (req, res) => {
         });
 
         //crear factura
-        //const factura = await service.create(correo);
+        const data = {
+            correo: correo,
+            id_preferencia: response.id
+        }
+        //const factura = await service.create(data);
 
         //eliminar carrito
         //await productoService.cleanCarrito(correo);
@@ -53,7 +57,15 @@ const create = async (req, res) => {
 
 const recieveWebhook = async (req, res) => {
     try {
-        console.log(req.body);
+        const body = req.body;
+        //si es una orden de pago, busco la orden y obtendo la preferencia
+        if (body.topic !== null && body.topic !== undefined && body.topic === 'merchant_order') {
+            const merchantOrder = new MerchantOrder(client);
+            const segments = body.resource.split('/');
+            const ordenDePago = await merchantOrder.get({ merchantOrderId: segments[segments.length - 1] });
+            console.log(ordenDePago);
+        }
+        //con la preferencia busco en db y si esta closed, siginfica
         res.json({ success: true });
     } catch (error) {
         console.log(error);

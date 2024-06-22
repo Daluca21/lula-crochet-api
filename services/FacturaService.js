@@ -16,10 +16,11 @@ class FacturaService {
         return res;
     }
 
-    async create(correo) {
+    async create(data) {
         const totales = await productoService.getTotalesCarrito();
         const data = {
-            id_usuario: correo,
+            id_usuario: data.correo,
+            id_preferencia : data.id_preferencia,
             fechaEmision: Date.now(),
             descuento: totales.totalDescuento,
             subTotal: totales.total,
