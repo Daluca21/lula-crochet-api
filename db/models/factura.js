@@ -34,10 +34,6 @@ module.exports = module.exports = (sequelize, DataTypes, Model) => {
       estaPagado : {
         type: DataTypes.BOOLEAN,
         allowNull: false
-      },
-      id_preferencia : {
-        type : DataTypes.STRING(256),
-        allowNull : false
       }
     },
     {

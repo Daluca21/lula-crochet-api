@@ -283,7 +283,7 @@ class ProductoService {
         let totalDescuento = 0;
 
         await Promise.all(carrito.map(async producto => {
-            const cantidad = await this.getAmountByUser(correo, producto.productoId);
+            const cantidad = await this.getAmountByUser(correo, producto.id);
             const descuento = await this.getDescuento(producto); 
 
             total += producto.precio * cantidad;

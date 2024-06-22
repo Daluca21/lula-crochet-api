@@ -27,6 +27,12 @@ const create = async (req, res) => {
             };
         }));
 
+        //crear factura
+        const params = {
+            correo: correo
+        }
+        const factura = await service.create(params);
+
         //crear preferencia en MercadoPago
         const response = await preference.create({
             body: {
@@ -37,21 +43,14 @@ const create = async (req, res) => {
                     "pending": `${URL_FRONT}/api`
                 },
                 notification_url: `${URL_BACK}/facturas/webhook`,
-                external_reference: 1
+                external_reference: factura.id
             }
         });
-
-        //crear factura
-        const params = {
-            correo: correo,
-            id_preferencia: response.id
-        }
-        //const factura = await service.create(params);
 
         //eliminar carrito
         //await productoService.cleanCarrito(correo);
 
-        res.json(response);
+        res.json({factura, response});
     } catch (error) {
         res.status(500).send({ success: false, message: error.message });
     }
@@ -66,11 +65,12 @@ const recieveWebhook = async (req, res) => {
             const segments = body.resource.split('/');
             const ordenDePago = await merchantOrder.get({ merchantOrderId: segments[segments.length - 1] });
             const status = ordenDePago.status;
+            const idFactura = ordenDePago.external_reference;
             console.log(ordenDePago);
             if (status === 'closed') {
-                //service.confirmarPago(ordenDePago.external_reference);
+                //service.confirmarPago(idFactura);
             } else if (status === 'expired') {
-                //service.devolverProductos(ordenDePago.external_reference);
+                //service.devolverProductos(idFactura);
             }
         }
         res.json({ success: true });
