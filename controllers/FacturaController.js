@@ -3,11 +3,9 @@ const { Preference } = require("mercadopago");
 const { URL_FRONT, URL_BACK } = require("../config/index");
 const FacturaService = require("../services/FacturaService");
 const ProductoService = require("../services/ProductoService");
-const CarritoService = require("../services/CarritoService");
 const ModeloService = require("../services/ModeloService");
 const service = new FacturaService();
 const productoService = new ProductoService();
-const carritoService = new CarritoService();
 const modeloService = new ModeloService();
 
 const create = async (req, res) => {
@@ -16,10 +14,10 @@ const create = async (req, res) => {
         const body = req.body;
         const correo = body.correo;
         const carrito = await productoService.getCarrito(correo);
-        console.log(carrito);
+
         const items = await Promise.all(carrito.map(async producto => {
             const modelo = await modeloService.findOne(producto.id_modelo);
-            const cantidad = await carritoService.getAmountByUser(correo, producto.id);
+            const cantidad = await productoService.getAmountByUser(correo, producto.id);
             const descuento = await productoService.getDescuento(producto);
             return {
                 title: `${modelo.nombre} ${producto.tamanio}`,
@@ -28,6 +26,7 @@ const create = async (req, res) => {
             };
         }));
 
+        //crear referencia en MercadoPago
         const response = await preference.create({
             body: {
                 items: items,
@@ -39,6 +38,12 @@ const create = async (req, res) => {
                 notification_url: `${URL_BACK}/facturas/webhook`
             }
         });
+
+        //crear factura
+        //const factura = await service.create(correo);
+
+        //eliminar carrito
+        //await productoService.cleanCarrito(correo);
 
         res.json(response);
     } catch (error) {

@@ -171,6 +171,9 @@ class ProductoService {
         return 0;
     }
 
+
+    //Carrito
+
     async addToCarrito(data) {
         if (!data.hasOwnProperty("id_usuario") || !data.hasOwnProperty("id_producto") || !data.hasOwnProperty("cantidad")) {
             let msg = "Formato incorrecto para añadir un producto al carrito del usuario. Hace falta:";
@@ -202,12 +205,12 @@ class ProductoService {
 
         let cantidadAntigua = 0;
         let cantidadDisponible = producto.cantidadDisponible;
-        
+
         if (carrito !== null) {
             cantidadAntigua = carrito.cantidad;
         }
 
-        if ((cantidad - cantidadAntigua) >  cantidadDisponible || cantidad < 0) {
+        if ((cantidad - cantidadAntigua) > cantidadDisponible || cantidad < 0) {
             let msg = "Error en las cantidades: ";
             if ((cantidad - cantidadAntigua) > cantidadDisponible) {
                 msg += "\nNo hay suficientes unidades en el inventario";
@@ -217,7 +220,7 @@ class ProductoService {
             }
             throw new Error(msg);
         }
-        
+
         if (carrito !== null) {
             await this.removeToCarrito(correo, idProducto);
             cantidadDisponible = cantidadDisponible + cantidadAntigua;
@@ -243,10 +246,55 @@ class ProductoService {
         return { deleted: true };
     }
 
+    async cleanCarrito(correo) {
+        await models.Carrito.destroy({
+            where: {
+                UsuarioCorreo: correo
+            }
+        });
+        return { deleted: true };
+    }
+
     async getCarrito(correo) {
         const usuario = await serviceUsuario.findOne(correo);
         return usuario.Productos;
     }
+
+    async getAmountByUser(correo, id) {
+        const carrito = await models.Carrito.findOne({
+            where: {
+                ProductoId: id,
+                UsuarioCorreo: correo
+            }
+        });
+        if (carrito === null || carrito === undefined) {
+            throw new Error("No existe ese producto en el carrito");
+        }
+        return carrito.cantidad;
+    }
+
+    async getTotalesCarrito(correo) {
+        const carrito = await this.getCarrito(correo);
+        if (!carrito || carrito.length === 0) {
+            throw new Error("No hay productos en el carrito");
+        }
+
+        let total = 0;
+        let totalDescuento = 0;
+
+        await Promise.all(carrito.map(async producto => {
+            const cantidad = await this.getAmountByUser(correo, producto.productoId);
+            const descuento = await this.getDescuento(producto); 
+
+            total += producto.precio * cantidad;
+            totalDescuento += (producto.precio * cantidad) * (descuento / 100);
+        }));
+
+        return { total, totalDescuento };
+    }
+
+
+    //Ofertas
 
     async getOfertasById(id) {
         const now = new Date();
