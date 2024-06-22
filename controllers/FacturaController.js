@@ -66,9 +66,10 @@ const recieveWebhook = async (req, res) => {
             const ordenDePago = await merchantOrder.get({ merchantOrderId: segments[segments.length - 1] });
             const status = ordenDePago.status;
             const idFactura = ordenDePago.external_reference;
-            console.log(ordenDePago);
             if (status === 'closed') {
-                service.confirmarPago(idFactura);
+                console.log(idFactura);
+                console.log(ordenDePago);
+                await service.confirmarPago(idFactura);
             } else if (status === 'expired') {
                 //service.devolverProductos(idFactura);
             }
