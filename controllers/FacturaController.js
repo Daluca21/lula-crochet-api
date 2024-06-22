@@ -69,9 +69,11 @@ const recieveWebhook = async (req, res) => {
             if (status === 'closed') {
                 console.log(idFactura);
                 console.log(ordenDePago);
-                await service.confirmarPago(idFactura);
+                //await service.confirmarPago(idFactura);
+                //lo pongo aca para probar
+                await service.devolverProductos(idFactura);
             } else if (status === 'expired') {
-                //service.devolverProductos(idFactura);
+                await service.devolverProductos(idFactura);
             }
         }
         res.json({ success: true });

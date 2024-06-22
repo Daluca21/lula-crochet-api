@@ -48,11 +48,32 @@ class FacturaService {
         return { deleted: true };
     }
 
-    async confirmarPago(id){
+    async confirmarPago(id) {
         const data = {
-            estaPagado : true
+            estaPagado: true
         }
         await this.update(id, data);
+    }
+
+    async devolverProductos(id) {
+        const productos = await this.findByPk(id).Productos;
+        productos.map(async producto => {
+            const cantidad = await this.getAmountByFactura(id, producto.id);
+            await this.update(id, { cantidadDisponible: producto.cantidadDisponible + cantidad });
+        })
+    }
+
+    async getAmountByFactura(idFactura, idProducto) {
+        const producto = await models.ProductoFactura.findOne({
+            where: {
+                ProductoId: idProducto,
+                FacturaId: idFactura
+            }
+        });
+        if (producto === null || producto === undefined) {
+            throw new Error("No existe ese producto en esta factura");
+        }
+        return producto.cantidad;
     }
 }
 
