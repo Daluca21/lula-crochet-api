@@ -35,7 +35,8 @@ const create = async (req, res) => {
                     "failure": `${URL_FRONT}/api`,
                     "pending": `${URL_FRONT}/api`
                 },
-                notification_url: `${URL_BACK}/facturas/webhook`
+                notification_url: `${URL_BACK}/facturas/webhook`,
+                external_reference: 1
             }
         });
 
@@ -44,7 +45,7 @@ const create = async (req, res) => {
             correo: correo,
             id_preferencia: response.id
         }
-        //const factura = await service.create(data);
+        //const factura = await service.create(params);
 
         //eliminar carrito
         //await productoService.cleanCarrito(correo);
@@ -63,9 +64,13 @@ const recieveWebhook = async (req, res) => {
             const merchantOrder = new MerchantOrder(client);
             const segments = body.resource.split('/');
             const ordenDePago = await merchantOrder.get({ merchantOrderId: segments[segments.length - 1] });
-            console.log(ordenDePago);
+            const status = ordenDePago.status;
+            if(status === 'closed'){
+                //service.confirmarPago(ordenDePago.external_reference);
+            }else if(status === 'expired'){
+                //service.devolverProductos(ordenDePago.external_reference);
+            }
         }
-        //con la preferencia busco en db y si esta closed, siginfica
         res.json({ success: true });
     } catch (error) {
         console.log(error);
