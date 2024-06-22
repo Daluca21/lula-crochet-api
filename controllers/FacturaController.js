@@ -4,6 +4,7 @@ const { URL_FRONT, URL_BACK } = require("../config/index");
 const FacturaService = require("../services/FacturaService");
 const ProductoService = require("../services/ProductoService");
 const ModeloService = require("../services/ModeloService");
+const { or } = require("sequelize");
 const service = new FacturaService();
 const productoService = new ProductoService();
 const modeloService = new ModeloService();
@@ -65,9 +66,10 @@ const recieveWebhook = async (req, res) => {
             const segments = body.resource.split('/');
             const ordenDePago = await merchantOrder.get({ merchantOrderId: segments[segments.length - 1] });
             const status = ordenDePago.status;
-            if(status === 'closed'){
+            console.log(ordenDePago);
+            if (status === 'closed') {
                 //service.confirmarPago(ordenDePago.external_reference);
-            }else if(status === 'expired'){
+            } else if (status === 'expired') {
                 //service.devolverProductos(ordenDePago.external_reference);
             }
         }
