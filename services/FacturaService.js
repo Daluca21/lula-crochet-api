@@ -56,7 +56,7 @@ class FacturaService {
     }
 
     async devolverProductos(id) {
-        const productos = await this.findByPk(id).Productos;
+        const productos = await this.findOne(id).Productos;
         productos.map(async producto => {
             const cantidad = await this.getAmountByFactura(id, producto.id);
             await this.update(id, { cantidadDisponible: producto.cantidadDisponible + cantidad });
