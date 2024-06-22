@@ -40,7 +40,7 @@ const create = async (req, res) => {
         });
 
         //crear factura
-        const data = {
+        const params = {
             correo: correo,
             id_preferencia: response.id
         }
