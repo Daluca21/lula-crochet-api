@@ -59,7 +59,6 @@ const create = async (req, res) => {
 const recieveWebhook = async (req, res) => {
     try {
         const body = req.body;
-        //si es una orden de pago, busco la orden y obtendo la preferencia
         if (body.topic !== null && body.topic !== undefined && body.topic === 'merchant_order') {
             const merchantOrder = new MerchantOrder(client);
             const segments = body.resource.split('/');
@@ -69,9 +68,7 @@ const recieveWebhook = async (req, res) => {
             if (status === 'closed') {
                 console.log(idFactura);
                 console.log(ordenDePago);
-                //await service.confirmarPago(idFactura);
-                //lo pongo aca para probar
-                await service.devolverProductos(idFactura);
+                await service.confirmarPago(idFactura);
             } else if (status === 'expired') {
                 await service.devolverProductos(idFactura);
             }

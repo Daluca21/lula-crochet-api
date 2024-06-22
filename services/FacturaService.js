@@ -56,15 +56,19 @@ class FacturaService {
     }
 
     async devolverProductos(id) {
-        const productos = await this.findOne(id).Productos;
+        const factura = await this.findOne(id);
+        const productos = await factura.getProductos();
+        if (!productos || productos.length === 0) {
+            throw new Error("No hay productos en esta factura");
+        }
         productos.map(async producto => {
             const cantidad = await this.getAmountByFactura(id, producto.id);
-            await this.update(id, { cantidadDisponible: producto.cantidadDisponible + cantidad });
-        })
+            await productoService.update(producto.id, { cantidadDisponible: producto.cantidadDisponible + cantidad });
+        });
     }
 
     async getAmountByFactura(idFactura, idProducto) {
-        const producto = await models.ProductoFactura.findOne({
+        const producto = await models.Producto_Factura.findOne({
             where: {
                 ProductoId: idProducto,
                 FacturaId: idFactura
