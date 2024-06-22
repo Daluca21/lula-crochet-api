@@ -1,11 +1,11 @@
 module.exports = module.exports = (sequelize, DataTypes, Model) => {
   class Factura extends Model {
     static associate(models) {
-      this.belongsToMany(models.Producto, { through: 'Producto_Factura' });
-      this.belongsTo(models.Usuario, { through: 'id_usuario' });
+      this.belongsTo(models.Usuario, { foreignKey: 'id_usuario' });
       this.hasOne(models.Devolucion, { foreignKey: 'id_factura', allowNull: false });
       this.hasOne(models.Entrega, { foreignKey: 'id_factura', allowNull: false });
       this.hasMany(models.Transaccion, { foreignKey: 'reference' });
+      this.belongsToMany(models.Producto, { through: 'Producto_Factura' });
     }
   }
   Factura.init(
@@ -31,7 +31,7 @@ module.exports = module.exports = (sequelize, DataTypes, Model) => {
         type: DataTypes.STRING(256),
         allowNull: false
       },
-      estaPagado : {
+      estaPagado: {
         type: DataTypes.BOOLEAN,
         allowNull: false
       }

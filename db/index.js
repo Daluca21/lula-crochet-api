@@ -20,9 +20,9 @@ const db = {}
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-tableNames = TABLE_NAMES.split(",");
+const tableNames = TABLE_NAMES.split(",");
 tableNames.forEach(name => {
-  require(`./models/${name}.js`)(sequelize, DataTypes, Model); 
+  require(`./models/${name}.js`)(sequelize, DataTypes, Model);
 });
 
 Object.values(sequelize.models).filter(model => model.hasOwnProperty("associate") && typeof model.associate === "function").forEach(model => model.associate(sequelize.models));
