@@ -15,6 +15,16 @@ class FotoService {
     }
 
     async create(data) {
+        if (!data.hasOwnProperty("url") || !data.hasOwnProperty("tamanio")) {
+            let msg = "Formato incorrecto para añadir crear una factura. Hace falta:";
+            if (!data.hasOwnProperty("url")) {
+                msg += "\nAgregar la propiedad 'url' de la foto. Probablemente hubo un error al crear el enlace";
+            }
+            if (!data.hasOwnProperty("tamanio")) {
+                msg += "\nAgregar la propiedad 'tamanio' del tamaño de referencia de la foto";
+            }
+            throw new Error(msg);
+        }
         const res = await models.Foto.create(data);
         return res;
     }
@@ -27,6 +37,10 @@ class FotoService {
 
     async delete(id) {
         const model = await this.findOne(id);
+        console.log(model);
+        if(model === null){
+            throw new Error(`No existe imagen con id ${id}`);
+        }
         await model.destroy();
         return { deleted: true };
     }

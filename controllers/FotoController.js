@@ -1,4 +1,4 @@
-const FotoService = require("../services/MaterialService");
+const FotoService = require("../services/FotoService");
 const service = new FotoService();
 
 const get = async (req, res) => {
