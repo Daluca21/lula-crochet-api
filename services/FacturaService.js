@@ -17,6 +17,13 @@ class FacturaService {
     }
 
     async create(params) {
+        if (!params.hasOwnProperty("correo")) {
+            let msg = "Formato incorrecto para añadir crear una factura. Hace falta:";
+            if (!params.hasOwnProperty("correo")) {
+                msg += "\nAgregar la propiedad 'correo' del usuario";
+            }
+            throw new Error(msg);
+        }
         const correo = params.correo;
         const totales = await productoService.getTotalesCarrito(correo);
         const data = {
