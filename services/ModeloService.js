@@ -29,6 +29,31 @@ class ModeloService {
         return res;
     }
 
+    async findByCategoria(id_categoria){
+        const res = await models.Modelo.findAll({
+            where: {
+                id_categoria : id_categoria
+            },
+            include: [
+                {
+                    model: models.Foto,
+                    through: models.Modelo_Foto
+                },
+                {
+                    model: models.Material,
+                    through: models.Modelo_Material
+                },
+                {
+                    model: models.Categoria,
+                },
+                {
+                    model: models.Producto
+                },
+            ]
+        });
+        return res;
+    }
+
     async findOne(id) {
         const res = await models.Modelo.findByPk(id, {
             include: [
