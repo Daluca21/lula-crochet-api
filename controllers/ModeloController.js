@@ -39,6 +39,7 @@ const update = async (req, res) => {
       req.body.nombre = req.body.nombre.toUpperCase();
     }
     const body = req.body;
+    console.log(body);
     const response = await service.update(id, body);
     res.json({ success: true, data: response });
   } catch (error) {

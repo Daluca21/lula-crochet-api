@@ -62,7 +62,6 @@ const update = async (req, res) => {
   try {
     const { id } = req.params;
     const body = req.body;
-    console.log(req);
     const response = await service.update(id, body);
     res.json({ success: true, data: response });
   } catch (error) {
