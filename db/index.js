@@ -27,7 +27,7 @@ tableNames.forEach(name => {
 
 Object.values(sequelize.models).filter(model => model.hasOwnProperty("associate") && typeof model.associate === "function").forEach(model => model.associate(sequelize.models));
 
-db.sequelize.sync({ alter: false }).then(() => {
+db.sequelize.sync({ alter: true }).then(() => {
   console.log("Tables created");
 });
 

@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes, Model) => {
       nombre: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique : true
+        unique: true
       },
       grosor: {
         type: DataTypes.FLOAT,

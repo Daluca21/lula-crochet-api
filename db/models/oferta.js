@@ -1,27 +1,27 @@
 module.exports = module.exports = (sequelize, DataTypes, Model) => {
   class Oferta extends Model {
     static associate(models) {
-      this.belongsToMany(models.Producto, {through:'Producto_Oferta'});
+      this.belongsToMany(models.Producto, { through: 'Producto_Oferta' });
     }
   }
   Oferta.init(
     {
       id: {
-        type: DataTypes.INTEGER, 
+        type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
       },
       fechaInicio: {
-          type: DataTypes.DATE, 
-          allowNull: false
+        type: DataTypes.DATE,
+        allowNull: false
       },
       fechaFin: {
-          type: DataTypes.DATE, 
-          allowNull: false
+        type: DataTypes.DATE,
+        allowNull: false
       },
       descuento: {
-          type: DataTypes.FLOAT, 
-          allowNull: false
+        type: DataTypes.FLOAT,
+        allowNull: false
       },
       descripcion: {
         type: DataTypes.STRING(256),
@@ -29,9 +29,9 @@ module.exports = module.exports = (sequelize, DataTypes, Model) => {
       }
     },
     {
-      sequelize, 
-      modelName: 'Oferta', 
-      tableName: 'Oferta', 
+      sequelize,
+      modelName: 'Oferta',
+      tableName: 'Oferta',
       freezeTableName: true,
       createdAt: false,
       updatedAt: false

@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes, Model) => {
       this.belongsToMany(models.Foto, { through: "Modelo_Foto" });
       this.belongsToMany(models.Material, { through: "Modelo_Material" });
       this.belongsTo(models.Categoria, { foreignKey: 'id_categoria' });
-      this.hasMany(models.Producto, {foreignKey: 'id_modelo'});
+      this.hasMany(models.Producto, { foreignKey: 'id_modelo', onDelete: "RESTRICT" });
     }
   }
 
@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes, Model) => {
       nombre: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique : true
+        unique: true
       }
     },
     {

@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes, Model) => {
   class Foto extends Model {
     static associate(models) {
-      this.belongsToMany(models.Modelo, { through: "Modelo_Foto"});
+      this.belongsToMany(models.Modelo, { through: "Modelo_Foto" });
     }
   }
 

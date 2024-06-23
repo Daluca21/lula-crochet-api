@@ -2,9 +2,9 @@ module.exports = module.exports = (sequelize, DataTypes, Model) => {
   class Factura extends Model {
     static associate(models) {
       this.belongsTo(models.Usuario, { foreignKey: 'id_usuario' });
-      this.hasOne(models.Devolucion, { foreignKey: 'id_factura', allowNull: false });
-      this.hasOne(models.Entrega, { foreignKey: 'id_factura', allowNull: false });
-      this.hasMany(models.Transaccion, { foreignKey: 'reference' });
+      this.hasOne(models.Devolucion, { foreignKey: 'id_factura', allowNull: false, onDelete: "RESTRICT" });
+      this.hasOne(models.Entrega, { foreignKey: 'id_factura', allowNull: false, onDelete: "RESTRICT" });
+      this.hasMany(models.Transaccion, { foreignKey: 'reference', onDelete: "RESTRICT" });
       this.belongsToMany(models.Producto, { through: 'Producto_Factura' });
     }
   }

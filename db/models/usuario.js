@@ -3,8 +3,8 @@ module.exports = (sequelize, DataTypes, Model) => {
     static associate(models) {
       this.belongsToMany(models.Producto, { through: 'Carrito' });
       this.belongsTo(models.Rol, { foreignKey: 'id_rol' });
-      this.hasMany(models.Token, { foreignKey: 'correo' });
-      this.hasMany(models.Factura, { foreignKey: 'id_usuario' });
+      this.hasMany(models.Token, { foreignKey: 'correo', onDelete: "RESTRICT" });
+      this.hasMany(models.Factura, { foreignKey: 'id_usuario', onDelete: "RESTRICT" });
     }
   }
 

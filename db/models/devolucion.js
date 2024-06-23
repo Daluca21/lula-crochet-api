@@ -2,8 +2,7 @@ module.exports = (sequelize, DataTypes, Model) => {
   class Devolucion extends Model {
     static associate(models) {
       this.belongsToMany(models.Producto, { through: 'Producto_Devolucion' });
-      this.belongsTo(models.Factura, { foreignKey: 'id_factura'});
-      
+      this.belongsTo(models.Factura, { foreignKey: 'id_factura' });
     }
   }
   Devolucion.init(
