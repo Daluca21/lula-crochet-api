@@ -7,12 +7,22 @@ class OfertaService {
     constructor() { }
 
     async find() {
-        const res = await models.Oferta.findAll();
+        const res = await models.Oferta.findAll({
+            include: {
+                model: models.Producto,
+                through: models.Producto_Oferta
+            }
+        });
         return res;
     }
 
     async findOne(id) {
-        const res = await models.Oferta.findByPk(id);
+        const res = await models.Oferta.findByPk(id, {
+            include: {
+                model: models.Producto,
+                through: models.Producto_Oferta
+            }
+        });
         return res;
     }
 
