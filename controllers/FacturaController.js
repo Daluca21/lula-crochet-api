@@ -4,10 +4,14 @@ const { URL_FRONT, URL_BACK } = require("../config/index");
 const FacturaService = require("../services/FacturaService");
 const ProductoService = require("../services/ProductoService");
 const ModeloService = require("../services/ModeloService");
+const EntregaService = require("../services/EntregaService");
+const { sendEmail } = require("../utils/sendEmail");
 const { or } = require("sequelize");
 const service = new FacturaService();
 const productoService = new ProductoService();
 const modeloService = new ModeloService();
+const entregaService = new EntregaService();
+const facturaService = new FacturaService();
 
 const create = async (req, res) => {
     try {
@@ -50,7 +54,16 @@ const create = async (req, res) => {
         //eliminar carrito
         await productoService.cleanCarrito(correo);
 
-        res.json({factura, response});
+        //crear Entrega
+        const entrega = await entregaService.create({
+            id_factura: factura.id,
+            estado: 'creado',
+            municipio: body.municipio,
+            departamento: body.departamento,
+            direccion: body.direccion,
+        });
+
+        res.json({ factura, entrega, response });
     } catch (error) {
         res.status(500).send({ success: false, message: error.message });
     }
@@ -65,12 +78,31 @@ const recieveWebhook = async (req, res) => {
             const ordenDePago = await merchantOrder.get({ merchantOrderId: segments[segments.length - 1] });
             const status = ordenDePago.status;
             const idFactura = ordenDePago.external_reference;
+            const factura = await facturaService.findOne(idFactura);
             if (status === 'closed') {
-                console.log(idFactura);
-                console.log(ordenDePago);
-                await service.confirmarPago(idFactura);
+                if (factura.estaPagado !== true) {
+                    await service.confirmarPago(idFactura);
+
+                    //Cambiar estado entrega
+                    const entrega = await entregaService.findOneByFactura(idFactura);
+                    await entrega.update({ estado: "solicitado" });
+
+                    //Enviar correo de confirmación compra
+                    const correo = factura.id_usuario;
+                    const subject = `Tu pago fue exitoso`;
+                    const text = `Nos complace informarle que su pago se ha realizado exitosamente. Agradecemos su compra y confianza en nosotros. En breve, procesaremos su pedido y le notificaremos cuando el envío de sus productos haya comenzado. Puede esperar recibir otra notificación con la información de seguimiento del envío para que pueda estar al tanto del estado de su pedido`;
+                    await sendEmail({
+                        destination: correo,
+                        subject: subject,
+                        text: text
+                    });
+
+                }
             } else if (status === 'expired') {
                 await service.devolverProductos(idFactura);
+
+                //Eliminar entrega
+                await entregaService.delete(idFactura);
             }
         }
         res.json({ success: true });

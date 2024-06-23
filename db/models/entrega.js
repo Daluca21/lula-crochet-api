@@ -12,8 +12,8 @@ module.exports = module.exports = (sequelize, DataTypes, Model) => {
         primaryKey: true
       },
       estado: {
-          type: DataTypes.INTEGER, 
-          allowNull: false
+        type: DataTypes.ENUM('creado', 'solicitado', 'enviado', 'entregado'), 
+        allowNull: false
       },
       municipio: {
         type: DataTypes.STRING(256),
@@ -29,7 +29,7 @@ module.exports = module.exports = (sequelize, DataTypes, Model) => {
       },
       fechaEntrega: {
           type: DataTypes.DATE, 
-          allowNull: false
+          allowNull: true
       }
     },
     {
