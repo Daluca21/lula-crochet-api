@@ -40,6 +40,7 @@ const update = async (req, res) => {
     }
     const body = req.body;
     console.log(body);
+    const imagenes = req.files;
     const response = await service.update(id, body);
     res.json({ success: true, data: response });
   } catch (error) {

@@ -8,7 +8,7 @@ router
   .get("/", modeloController.get)
   .get("/:id", modeloController.getById)
   .post("/", upload.array("imagenes", 5), modeloController.create)
-  .put("/:id", modeloController.update)
+  .put("/:id", upload.array("imagenes", 5), modeloController.update)
   .delete("/:id", modeloController._delete);
 
 module.exports = router;
