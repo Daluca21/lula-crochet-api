@@ -63,7 +63,7 @@ class UsuarioService {
 
     async createDefault(data) {
         data.id_rol = rolDefault;
-        const usuario = models.Usuario.create(data);
+        const usuario = await models.Usuario.create(data);
         return usuario;
     }
 

@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = require("../config");
 const service = new UsuarioService();
 
-const register = (req, res) => {
+const register = async (req, res) => {
     try {
         const usuario = req.body.correo.split("@")[0] ?? null;
         const contrasena = req.body.contrasena;
@@ -15,7 +15,7 @@ const register = (req, res) => {
 
         req.body.contrasena = bcrypt.hashSync(contrasena, 10);
         const correo = req.body.correo;
-        const data = service.createDefault(req.body);
+        const data = await service.createDefault(req.body);
 
         return res.json({ success: true, data: data });
 
