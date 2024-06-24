@@ -49,9 +49,9 @@ const create = async (req, res) => {
 
         let response;
         if(!req.body.id_rol){
-            response = service.createDefault(req.body);
+            response = await service.createDefault(req.body);
         }else{
-            response = service.create(req.body);
+            response = await service.create(req.body);
         }
         
         res.json({ success: true, data: response });
