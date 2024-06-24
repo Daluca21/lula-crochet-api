@@ -131,7 +131,9 @@ class ProductoService {
         };
         const res = await models.Producto.findByPk(id, query);
         const descuento = await this.getDescuento(res);
-        res.setDataValue('descuento', descuento);
+        if (descuento !== -1) {
+            res.setDataValue('descuento', descuento);
+        }
         return res;
     }
 
@@ -154,6 +156,9 @@ class ProductoService {
 
     async getDescuento(producto) {
         const now = new Date();
+        if (producto === null || producto === undefined) {
+            return -1; //no existe
+        }
         const ofertas = await producto.getOferta({
             where: {
                 fechaInicio: {
@@ -284,7 +289,7 @@ class ProductoService {
 
         await Promise.all(carrito.map(async producto => {
             const cantidad = await this.getAmountByUser(correo, producto.id);
-            const descuento = await this.getDescuento(producto); 
+            const descuento = await this.getDescuento(producto);
 
             total += producto.precio * cantidad;
             totalDescuento += (producto.precio * cantidad) * (descuento / 100);
