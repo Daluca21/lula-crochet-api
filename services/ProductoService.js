@@ -241,13 +241,13 @@ class ProductoService {
             cantidadAntigua = carrito.cantidad;
         }
 
-        if ((cantidad - cantidadAntigua) > cantidadDisponible || cantidad < 0) {
+        if ((cantidad - cantidadAntigua) > cantidadDisponible || cantidad <= 0) {
             let msg = "Error en las cantidades: ";
             if ((cantidad - cantidadAntigua) > cantidadDisponible) {
                 msg += "\nNo hay suficientes unidades en el inventario";
             }
             if (cantidad < 0) {
-                msg += "\nCantidad negativa";
+                msg += "\nCantidad negativa o igual a cero";
             }
             throw new Error(msg);
         }
