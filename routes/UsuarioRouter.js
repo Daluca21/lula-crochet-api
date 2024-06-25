@@ -8,6 +8,7 @@ router.post("/register", usuarioController.register);
 router.get("/", verifyToken, usuarioController.get);
 router.get("/admins", usuarioController.getAdmins);
 router.get("/:id", verifyToken, usuarioController.getById);
+router.post("/confirmar/:token", usuarioController.confirmarCuenta);
 router.put("/:id", verifyToken, usuarioController.update);
 router.post("/",  verifyToken, usuarioController.create);
 router.delete("/:id", verifyToken, usuarioController._delete);

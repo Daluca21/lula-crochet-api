@@ -33,6 +33,11 @@ module.exports = (sequelize, DataTypes, Model) => {
       contrasena: {
         type: DataTypes.STRING,
         allowNull: false
+      },
+      verificado: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
       }
     },
     {

@@ -19,7 +19,7 @@ const login = (req, res) => {
 
         const correo = req.body.correo;
         return service.findOne(correo).then((user) => {
-            if (!user) {
+            if (!user || user.verificado === false) {
                 res.status(500).json({ success: false, message: "Usuario no existe" });
             } else {
                 bcrypt.compare(contrasena, user.contrasena, function (err, resp) {

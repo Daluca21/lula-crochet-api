@@ -63,8 +63,14 @@ class UsuarioService {
 
     async createDefault(data) {
         data.id_rol = rolDefault;
+        data.verificado = false;
         const usuario = await models.Usuario.create(data);
         return usuario;
+    }
+
+    async activarUsuario(correo) {
+        const res = await this.update(correo, { verificado: true });
+        return res;
     }
 
     async update(id, data) {
