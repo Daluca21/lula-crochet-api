@@ -152,7 +152,7 @@ class ProductoService {
 
     async delete(id) {
         const model = await this.findOne(id);
-        if(model.cantidadDisponible !== 0){
+        if (model.cantidadDisponible !== 0) {
             throw new Error("No es posible eliminar este producto porque hay existencias en inventario. Si necesita eliminar el producto, actualice la cantidad disponible del mismo a 0 e intentelo de nuevo");
         }
         await model.destroy();
@@ -258,7 +258,20 @@ class ProductoService {
         }
 
         await this.update(idProducto, { cantidadDisponible: cantidadDisponible - cantidad });
-        const res = await usuario.addProducto(producto, { through: { cantidad: data["cantidad"] } });;
+        await usuario.addProducto(producto, { through: { cantidad: data["cantidad"] } });
+
+        const descuento = await this.getDescuento(producto); 
+        const precio = producto.precio; 
+
+        const res = {
+            cantidad: data["cantidad"],
+            UsuarioCorreo: data["id_usuario"],
+            ProductoId: data["id_producto"],
+            descuento: descuento,
+            precioUnitario: precio,
+            precioUnitarioConDescuento: precio * (1 - descuento / 100),
+            precioTotal: (precio * (1 - descuento / 100)) * cantidad
+        };
         return res;
     }
 
