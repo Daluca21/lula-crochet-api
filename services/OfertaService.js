@@ -12,7 +12,13 @@ class OfertaService {
                 model: models.Producto,
                 through: models.Producto_Oferta,
                 include: {
-                    model: models.Modelo
+                    model: models.Modelo,
+                    include: [
+                        {
+                            model: models.Foto,
+                            through: models.Modelo_Foto
+                        }
+                    ]
                 }
             }
         });
@@ -25,7 +31,13 @@ class OfertaService {
                 model: models.Producto,
                 through: models.Producto_Oferta,
                 include: {
-                    model: models.Modelo
+                    model: models.Modelo,
+                    include: [
+                        {
+                            model: models.Foto,
+                            through: models.Modelo_Foto
+                        }
+                    ]
                 }
             }
         });
