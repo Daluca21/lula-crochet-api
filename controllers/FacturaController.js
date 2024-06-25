@@ -42,9 +42,9 @@ const create = async (req, res) => {
             body: {
                 items: items,
                 back_urls: {
-                    "success": `${URL_FRONT}/api`,
-                    "failure": `${URL_FRONT}/api`,
-                    "pending": `${URL_FRONT}/api`
+                    "success": `${URL_FRONT}/PagoExitoso`,
+                    "failure": `${URL_FRONT}/PagoExitoso`,
+                    "pending": `${URL_FRONT}/PagoExitoso`
                 },
                 notification_url: `${URL_BACK}/facturas/webhook`,
                 external_reference: factura.id
