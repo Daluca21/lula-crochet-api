@@ -152,6 +152,9 @@ class ProductoService {
 
     async delete(id) {
         const model = await this.findOne(id);
+        if(model.cantidadDisponible !== 0){
+            throw new Error("No es posible eliminar este producto porque hay existencias en inventario. Si necesita eliminar el producto, actualice la cantidad disponible del mismo a 0 e intentelo de nuevo");
+        }
         await model.destroy();
         return { deleted: true };
     }
