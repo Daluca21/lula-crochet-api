@@ -11,9 +11,7 @@ const tokenService = new TokenService();
 
 const register = async (req, res) => {
     try {
-        const usuario = req.body.correo.split("@")[0] ?? null;
-        const contrasena = req.body.contrasena;
-
+        const usuario = req.body.correo?.split("@")[0];
         if (!usuario) {
             return res.status(400).json({ message: "Correo es requerido" });
         }
@@ -21,21 +19,22 @@ const register = async (req, res) => {
         const correo = req.body.correo;
         const posibleUsuario = await service.findOne(correo);
 
-        if (posibleUsuario && posibleUsuario.verificado == true) {
-            new Error("Ya existe un usuario con ese correo");
+        if (posibleUsuario?.verificado) {
+            throw new Error("Ya existe un usuario con ese correo");
         }
 
         if (posibleUsuario) {
             await service.delete(correo);
         }
 
+        const contrasena = req.body.contrasena;
         req.body.contrasena = bcrypt.hashSync(contrasena, 10);
 
         const data = await service.createDefault(req.body);
 
         const token = crypto.randomBytes(20).toString('hex');
         const fechaExpiracion = Date.now() + 3600000; // 1 hora
-        const tokenObj = await tokenService.create({ correo: correo, token: token, fechaExpiracion: fechaExpiracion });
+        const tokenObj = await tokenService.create({ correo, token, fechaExpiracion });
         await data.addToken(tokenObj);
 
         const urlConfirmar = `${URL_FRONT}/ConfirmarRegistro?token=${token}`;
@@ -44,15 +43,15 @@ const register = async (req, res) => {
             destination: data.correo,
             subject: "Confirma tu correo",
             text: `Hola ${data.nombre} ${data.apellido}, te damos la bienvenida a Lula Crochet. Por favor confirma tu correo haciendo click en el siguiente enlace: 
-            ${urlConfirmar}.
+            ${urlConfirmar} .
             
             Recuerda que tienes un 1 hora para confirmar tu correo.`
         });
 
-        return res.json({ success: true, data: data });
+        return res.json({ success: true, data });
 
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ success: false, message: error.message });
     }
 };
