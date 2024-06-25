@@ -24,14 +24,14 @@ const login = (req, res) => {
             } else {
                 bcrypt.compare(contrasena, user.contrasena, function (err, resp) {
                     if (err) {
-                        return res.status(401).json({ message: "Authentication failed" });
+                        return res.status(401).json({ message: "Usuario o contraseña incorrecta" });
                     }
                     if (resp) {
                         const token = jwt.sign({ correo }, SECRET_KEY, { expiresIn: "1h" });
                         user.contrasena = "";
                         return res.json({ success: true, token: token, data: user });
                     } else {
-                        return res.status(401).json({ message: "Authentication failed" });
+                        return res.status(401).json({ message: "Usuario o contraseña incorrecta" });
                     }
                 });
             }
