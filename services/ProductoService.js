@@ -71,8 +71,10 @@ class ProductoService {
             const descuento = await this.getDescuento(producto);
             const fotos = await serviceModelo.getFotos(producto.id_modelo);
             if (descuento > 0) {
+                const oferta = await this.getOferta(producto);
                 producto.setDataValue('descuento', descuento);
                 producto.setDataValue('fotos', fotos);
+                producto.setDataValue('oferta', oferta);
                 productosConDescuento.push(producto);
             }
         });
@@ -176,6 +178,27 @@ class ProductoService {
         return 0;
     }
 
+    async getOferta(producto) {
+        const now = new Date();
+        if (producto === null || producto === undefined) {
+            return null;
+        }
+        const ofertas = await producto.getOferta({
+            where: {
+                fechaInicio: {
+                    [Op.lte]: now
+                },
+                fechaFin: {
+                    [Op.gte]: now
+                }
+            },
+            order: [['descuento', 'DESC']]
+        });
+        if (ofertas && ofertas.length > 0) {
+            return ofertas[0];
+        }
+        return null;
+    }
 
     //Carrito
 
