@@ -10,7 +10,10 @@ class OfertaService {
         const res = await models.Oferta.findAll({
             include: {
                 model: models.Producto,
-                through: models.Producto_Oferta
+                through: models.Producto_Oferta,
+                include: {
+                    model: models.Modelo
+                }
             }
         });
         return res;
@@ -20,7 +23,10 @@ class OfertaService {
         const res = await models.Oferta.findByPk(id, {
             include: {
                 model: models.Producto,
-                through: models.Producto_Oferta
+                through: models.Producto_Oferta,
+                include: {
+                    model: models.Modelo
+                }
             }
         });
         return res;
