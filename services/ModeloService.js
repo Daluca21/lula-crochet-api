@@ -111,7 +111,7 @@ class ModeloService {
 
         console.log(await modelo.getMaterials());
         await modelo.setMaterials([]);
-        
+
         const crearMateriales = data.materiales.map(async (nombre) => {
             const material = await models.Material.findOne({
                 where: {
@@ -137,7 +137,7 @@ class ModeloService {
             await Promise.all(crearImagenes);
         }
 
-        const res = await model.update(data);
+        const res = await modelo.update(data);
         
         return res;
     }
