@@ -62,8 +62,8 @@ const create = async (req, res) => {
             departamento: body.departamento,
             direccion: body.direccion,
         });
-
-        res.json({ factura, entrega, response });
+        console.log(response);
+        res.json({ factura, entrega, linkDePago: response.init_point });
     } catch (error) {
         res.status(500).send({ success: false, message: error.message });
     }

@@ -29,10 +29,10 @@ class ModeloService {
         return res;
     }
 
-    async findByCategoria(id_categoria){
+    async findByCategoria(id_categoria) {
         const res = await models.Modelo.findAll({
             where: {
-                id_categoria : id_categoria
+                id_categoria: id_categoria
             },
             include: [
                 {
@@ -106,9 +106,39 @@ class ModeloService {
         return modelo;
     }
 
-    async update(id, data) {
-        const model = await this.findOne(id);
+    async update(id, data, imagenes) {
+        const modelo = await this.findOne(id);
+
+        console.log(await modelo.getMaterials());
+        await modelo.setMaterials([]);
+        
+        const crearMateriales = data.materiales.map(async (nombre) => {
+            const material = await models.Material.findOne({
+                where: {
+                    "nombre": nombre
+                }
+            });
+
+            await modelo.addMaterial(material);
+        });
+        await Promise.all(crearMateriales);
+
+
+        if (imagenes && imagenes.length > 0) {
+            const crearImagenes = imagenes.map(async (imagen) => {
+                const { ref, downloadURL } = await uploadFile(imagen);
+                const foto = await fotoService.create({
+                    url: downloadURL,
+                    tamanio: data.tamanio
+                });
+                await modelo.addFoto(foto);
+                console.log(`Image added: ${downloadURL}`);
+            });
+            await Promise.all(crearImagenes);
+        }
+
         const res = await model.update(data);
+        
         return res;
     }
 
