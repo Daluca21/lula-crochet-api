@@ -301,7 +301,17 @@ class ProductoService {
 
     async getCarrito(correo) {
         const usuario = await serviceUsuario.findOne(correo);
-        return usuario.Productos;
+        const productos = usuario.Productos;
+        const infoAdicional = productos.map(async (producto) => {
+            const descuento = await this.getDescuento(producto); 
+            producto.setDataValue('descuento', descuento);
+            producto.setDataValue("cantidad", producto.Carrito.cantidad);
+            producto.setDataValue("precioUnitario", producto.precio);
+            producto.setDataValue("precioUnitarioConDescuento", producto.precio * (1 - descuento / 100));
+            producto.setDataValue("precioTotal", (producto.precio * (1 - descuento / 100)) * producto.Carrito.cantidad);
+        });
+        await Promise.all(infoAdicional);
+        return productos;
     }
 
     async getAmountByUser(correo, id) {
